@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 270" width="1280" height="270">
+<defs><linearGradient id="rose" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e5788c"/><stop offset="1" stop-color="#b52f49"/></linearGradient></defs>
+<rect width="1280" height="270" rx="28" fill="#fdf0f3"/><g><rect x="60" y="60" width="360" height="150" rx="22" fill="#fff" stroke="#f3d3da"/>
+  <rect x="60" y="60" width="360" height="150" rx="22" fill="none" stroke="#c23b55" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.08;0.3;0.38;1" dur="3.6s" begin="0.0s" repeatCount="indefinite"/></rect>
+  <circle cx="112" cy="112" r="24" fill="url(#rose)"/><text x="112" y="119" text-anchor="middle" font-family="Georgia,serif" font-size="21" fill="#fff">1</text>
+  <text x="152" y="110" font-family="Georgia,serif" font-size="22" fill="#3a1f27">Nhập tên thánh &amp; họ tên</text>
+  <text x="152" y="138" font-family="'Segoe UI',Helvetica,Arial,sans-serif" font-size="15" fill="#97818a">Cha mẹ hai họ, giáo xứ, giờ lễ</text>
+  <rect x="88" y="166" width="304" height="6" rx="3" fill="#fbe3e8"/>
+  <rect x="88" y="166" width="0" height="6" rx="3" fill="url(#rose)"><animate attributeName="width" values="0;304;304;0" keyTimes="0;0.3;0.95;1" dur="3.6s" begin="0.0s" repeatCount="indefinite"/></rect></g><g><rect x="460" y="60" width="360" height="150" rx="22" fill="#fff" stroke="#f3d3da"/>
+  <rect x="460" y="60" width="360" height="150" rx="22" fill="none" stroke="#c23b55" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.08;0.3;0.38;1" dur="3.6s" begin="1.2s" repeatCount="indefinite"/></rect>
+  <circle cx="512" cy="112" r="24" fill="url(#rose)"/><text x="512" y="119" text-anchor="middle" font-family="Georgia,serif" font-size="21" fill="#fff">2</text>
+  <text x="552" y="110" font-family="Georgia,serif" font-size="22" fill="#3a1f27">Chọn mẫu, ảnh &amp; Lời Chúa</text>
+  <text x="552" y="138" font-family="'Segoe UI',Helvetica,Arial,sans-serif" font-size="15" fill="#97818a">15 mẫu ảnh · 3 kiểu thiệp mời</text>
+  <rect x="488" y="166" width="304" height="6" rx="3" fill="#fbe3e8"/>
+  <rect x="488" y="166" width="0" height="6" rx="3" fill="url(#rose)"><animate attributeName="width" values="0;304;304;0" keyTimes="0;0.3;0.95;1" dur="3.6s" begin="1.2s" repeatCount="indefinite"/></rect></g><g><rect x="860" y="60" width="360" height="150" rx="22" fill="#fff" stroke="#f3d3da"/>
+  <rect x="860" y="60" width="360" height="150" rx="22" fill="none" stroke="#c23b55" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.08;0.3;0.38;1" dur="3.6s" begin="2.4s" repeatCount="indefinite"/></rect>
+  <circle cx="912" cy="112" r="24" fill="url(#rose)"/><text x="912" y="119" text-anchor="middle" font-family="Georgia,serif" font-size="21" fill="#fff">3</text>
+  <text x="952" y="110" font-family="Georgia,serif" font-size="22" fill="#3a1f27">Xuất ảnh &amp; thiệp mời</text>
+  <text x="952" y="138" font-family="'Segoe UI',Helvetica,Arial,sans-serif" font-size="15" fill="#97818a">Lưu ảnh, gửi Zalo hoặc chiếu tivi</text>
+  <rect x="888" y="166" width="304" height="6" rx="3" fill="#fbe3e8"/>
+  <rect x="888" y="166" width="0" height="6" rx="3" fill="url(#rose)"><animate attributeName="width" values="0;304;304;0" keyTimes="0;0.3;0.95;1" dur="3.6s" begin="2.4s" repeatCount="indefinite"/></rect></g><path d="M426 135 h28" stroke="#c23b55" stroke-width="2.5" stroke-dasharray="4 6" fill="none"><animate attributeName="stroke-dashoffset" values="20;0" dur=".8s" repeatCount="indefinite"/></path><path d="M826 135 h28" stroke="#c23b55" stroke-width="2.5" stroke-dasharray="4 6" fill="none"><animate attributeName="stroke-dashoffset" values="20;0" dur=".8s" repeatCount="indefinite"/></path>
+<text x="640" y="246" text-anchor="middle" font-family="'Segoe UI',Helvetica,Arial,sans-serif" font-size="14" fill="#97818a">Không cần tài khoản · ảnh cưới của bạn không rời khỏi máy</text></svg>
