@@ -102,16 +102,20 @@ BROWSER=webkit BASE_URL=http://127.0.0.1:8000 node tests/invitations.spec.cjs
 ```
 
 
-### Cập nhật bố cục 06/11/2026
+### Năm thiết kế thiệp
 
-- 5 thiệp dùng cùng thứ tự: Lời Chúa → cha mẹ hai bên → lời báo tin → chú rể → biểu tượng Công giáo → cô dâu → địa điểm, địa chỉ, giờ và ngày Thánh lễ → hôn lễ tại tư gia nam và ngày âm lịch.
-- Giấy ngà và Đỏ vang không dùng ảnh. Trắng hồng, Viền vàng và Vòm ánh sáng dùng ảnh phía trên Lời Chúa.
-- Trong Nội dung, nhập riêng Địa chỉ thánh đường và giờ/ngày/ngày âm lịch của Hôn lễ tại tư gia nam. Ngày Thánh lễ vẫn dùng chung với ảnh trình chiếu; ngày tư gia độc lập.
-- Câu Lời Chúa và các lời dẫn trên thiệp được cố định; biểu tượng có thể chọn trong nhóm Công giáo. Không thay đổi dữ liệu tên, ngày giờ hoặc ảnh đã lưu.
-- Cả 15 mẫu trình chiếu có tiêu đề THÁNH LỄ HÔN PHỐI trên cùng, Lời Chúa bên dưới và giáo xứ/ngày giờ ở cuối. Một số mẫu dùng hai dòng Lời Chúa lệch nhẹ khi nội dung dài.
-- Kiểm tra hợp đồng nội dung và hình học: `node tests/content-order.cjs` (15 bố cục thiệp, 360 trường hợp slide).
+| Mẫu | Ảnh | Bố cục |
+| --- | --- | --- |
+| Ấn tín cổ điển | Không | Giấy ngà, khung kép, thư pháp đối xứng, nhành ô-liu |
+| Dải lụa hồng | Có | Lời Chúa trên ảnh ngang lớn, tiêu đề và lịch dạng dải mềm |
+| Huy hiệu vàng | Có | Ảnh huy hiệu tròn, hai ô gia đình, tên lệch nhịp, lịch hai tầng |
+| Vòm thiên thanh | Có | Vòm ảnh đứng, nền xanh, khung vòm bao quanh, chữ thanh |
+| Dạ khúc giao ước | Không | Đỏ vang đậm, ánh vàng, tên lớn so le, nhành ô-liu |
 
+Cả năm giữ thứ tự nội dung: Lời Chúa → cha mẹ hai bên → báo tin → chú rể → biểu tượng Công giáo → cô dâu → thông tin Thánh lễ → hôn lễ tư gia nam → âm lịch. Tên thánh cha mẹ nằm ở dòng riêng, viết hoa đầu từ và dùng Great Vibes; họ tên cha mẹ dùng Noto Serif viết hoa. Tên dâu rể dùng thư pháp hoặc serif nghiêng tùy thiết kế.
 
-### Kiểu chữ và lịch nghi lễ
+Ngày giờ Thánh lễ và hôn lễ tư gia nhập độc lập trong Nội dung; địa chỉ hai gia đình và thánh đường có trường riêng. Những ngoại lệ chữ hoa, chữ đậm và Lời Chúa nghiêng được duy trì.
 
-Nội dung thiệp và slide dùng chữ hoa, ngoại trừ câu Lời Chúa, “Ông Bà”, địa chỉ hai gia đình, vị thứ, địa chỉ thánh đường và ngày âm lịch. Câu Lời Chúa dùng chữ nghiêng; tên đôi tân hôn dùng Dancing Script hoặc Playfair Display nghiêng. “LỄ THÀNH HÔN”, thánh đường và ngày dương lịch Thánh lễ được nhấn đậm; cả cụm ngày giờ hôn lễ tư gia dùng chữ đậm. Hai sự kiện có dải thứ — ngày — giờ riêng, với đường kẻ mảnh. Địa chỉ gia đình có thể nhập trong Nội dung.
+15 mẫu trình chiếu vẫn có THÁNH LỄ HÔN PHỐI trên cùng, Lời Chúa phía trên ảnh, giáo xứ và ngày giờ cuối ảnh.
+
+Kiểm tra: `node tests/content-order.cjs` — 15 bố cục thiệp theo ba khổ xuất và 360 trường hợp slide. Kiểm tra bao gồm thứ tự nội dung, phân biệt tên thánh cha mẹ, chữ hoa/đậm/nghiêng, số khung ảnh, vị trí Lời Chúa và thông tin hai sự kiện.

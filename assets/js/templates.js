@@ -133,57 +133,108 @@ function eventBand(e,W,cy,date,time,{k=1,h=30,color='accent',home=false,prefix=f
   const cells=[[weekday(date),W*.225,W*.23,20,home?700:500],[dotDate(date),W*.5,W*.255,34,700],[(prefix?'VÀO LÚC ':'')+clockWords(time),W*.775,W*.23,prefix?18:20,home?700:500]];
   for(const [text,x,fit,size,weight]of cells)e.push({t:'text',text,x,y:cy,align:'center',font:'pf',upper:1,size:size*k,weight,fit,color,noScale:1,event:home?'home':'mass'});
 }
-function invitation({W,H,f,sym},style){
-  const u=H/1414,k=Math.min(W/1000,u),Y=n=>n*u,e=[],C=style,photo=!!C.photo;
+const saintCase=value=>String(value||'').normalize('NFC').toLocaleLowerCase('vi').replace(/(^|[\s-])([^\s-])/gu,(_,a,b)=>a+b.toLocaleUpperCase('vi'));
+// Five separate compositions share only their content contract and rendering helpers.
+function invitation({W,H,f,sym},C){
+  const u=H/1414,k=Math.min(W/1000,u),Y=n=>n*u,e=[],photo=!!C.photo;
   const text=(value,yy,size=25,o={})=>e.push({t:'text',text:value,x:W/2,y:Y(yy),align:'center',font:C.body||'cg',size:size*k,noScale:1,upper:1,fit:W*.84,color:C.text,...o});
-  e.push({t:'rect',x:0,y:0,w:W,h:H,fill:C.bg},{t:'paper',alpha:.10});
-  if(C.id==='wine')e.push({t:'rect',x:0,y:0,w:W*.018,h:H,fill:C.accent},{t:'rect',x:W*.982,y:0,w:W*.018,h:H,fill:C.accent});
-  else e.push({t:'rframe',x:W*.035,y:Y(28),w:W*.93,h:H-Y(56),r:C.id==='rose'?30*k:3*k,lw:1.1*k,color:C.accent,alpha:.45});
-  e.push({t:'blob',x:W*.95,y:H*.94,r:W*.55,color:C.accent,alpha:.09});
-  if(photo){
-    const ph=Y(200),pw=C.id==='gold'?ph:C.id==='arch'?W*.35:W*.68,px=(W-pw)/2;
-    e.push(I(px,Y(44),pw,ph,{shape:C.id==='gold'?'circle':C.id==='arch'?'arch':undefined,r:C.id==='rose'?16*k:0}));
-    e.push({t:'fade',x:px,y:Y(216),w:pw,h:Y(28),dir:'down',color:C.bg});
+  const line=(x1,yy,x2,alpha=.5)=>e.push({t:'line',x1:W*x1,y1:Y(yy),x2:W*x2,y2:Y(yy),lw:k,color:C.accent,alpha});
+  e.push({t:'rect',x:0,y:0,w:W,h:H,fill:C.bg},{t:'paper',alpha:.1});
+  const leaf=(x,yy,size,flip=1)=>e.push({t:'botanical',x:W*x,y:Y(yy),s:size*k,flip,color:C.accent,alpha:C.id==='wine'?.34:.22});
+  if(C.id==='cream'){
+    e.push({t:'frame',x:W*.045,y:Y(35),w:W*.91,h:H-Y(70),lw:1.1*k,gap:9*k,corner:12*k});
+    leaf(.11,150,190);leaf(.89,1260,190,-1);
+    line(.35,173,.65);line(.35,966,.65);
+  }else if(C.id==='rose'){
+    e.push({t:'blob',x:0,y:Y(800),r:W*.65,color:C.accent,alpha:.12},{t:'blob',x:W,y:Y(1360),r:W*.7,color:C.accent,alpha:.14});
+    leaf(.08,1020,260);leaf(.94,1040,260,-1);
+    e.push({t:'rect',x:W*.1,y:Y(633),w:W*.8,h:Y(75),r:37*k,fill:'#f6e3e7'});
+  }else if(C.id==='gold'){
+    e.push({t:'frame',x:W*.04,y:Y(30),w:W*.92,h:H-Y(60),lw:1.4*k,gap:12*k,corner:24*k});
+    e.push({t:'gframe',x:W*.5-Y(118),y:Y(139),w:Y(236),h:Y(236),shape:'circle',lw:1.3*k});
+    leaf(.2,310,180);leaf(.8,310,180,-1);
+    for(const cx of [.27,.73])e.push({t:'rframe',x:W*(cx-.205),y:Y(391),w:W*.41,h:Y(196),r:4*k,lw:.7*k,color:C.accent,alpha:.32});
+  }else if(C.id==='arch'){
+    e.push({t:'rect',x:0,y:0,w:W*.07,h:H,fill:C.accent,alpha:.10},{t:'rect',x:W*.93,y:0,w:W*.07,h:H,fill:C.accent,alpha:.10});
+    leaf(.06,770,280);leaf(.94,770,280,-1);
+    e.push({t:'rframe',x:W*.10,y:Y(28),w:W*.8,h:H-Y(56),r:W*.38,lw:1.2*k,color:C.accent,alpha:.30});
+    line(.28,612,.72);
+  }else{
+    e.push({t:'rframe',x:W*.035,y:Y(30),w:W*.93,h:H-Y(60),r:2*k,lw:.8*k,color:C.accent,alpha:.6});
+    leaf(.12,490,330);leaf(.9,920,330,-1);
+    e.push({t:'glow',x:W*.5,y:Y(760),r:W*.7,color:'accent',alpha:.08});
+    line(.12,185,.88);line(.12,972,.88);
   }
-  const q=photo?290:110,ft=photo?380:240;
-  text('“'+INV_VERSE.t+'”',q,30,{font:'cg',italic:1,upper:0,color:C.accent,maxW:W*.78,maxH:Y(64),lh:1.25,role:'scripture'});
-  text(INV_VERSE.r,q+47,18,{color:C.accent});
+  if(photo){
+    const {py,ph,pw}=C;
+    const w=C.id==='gold'?Y(ph):W*pw,x=(W-w)/2;
+    e.push(I(x,Y(py),w,Y(ph),{shape:C.id==='gold'?'circle':C.id==='arch'?'arch':undefined,r:C.id==='rose'?18*k:0}));
+    if(C.id==='rose')e.push({t:'fade',x,y:Y(py+ph-28),w,h:Y(28),dir:'down',color:C.bg});
+  }
+  const q=C.q,ft=C.ft;
+  text('“'+INV_VERSE.t+'”',q,C.id==='wine'?34:30,{font:'cg',italic:1,upper:0,color:C.accent,maxW:W*(C.id==='arch'?.71:.78),maxH:Y(68),lh:1.25,role:'scripture'});
+  text(INV_VERSE.r,q+45,17,{color:C.accent});
   const family=(cx,sa,na,sb,nb,addr)=>{
-    text('Ông Bà',ft,22,{x:cx,font:'cg',upper:0,color:C.accent,italic:1,fit:W*.4,role:'family-label'});
-    for(const [st,n,dy]of [[sa,na,35],[sb,nb,69]])text([st,n].filter(Boolean).join(' '),ft+dy,23,{x:cx,font:'times',fit:W*.40});
-    text(addr,ft+112,20,{x:cx,upper:0,fit:W*.40,maxW:W*.40,maxH:Y(42),lh:1.2,role:'family-address'});
+    text('Ông Bà',ft,22,{x:cx,font:'cg',upper:0,color:C.accent,italic:1,fit:W*.38,role:'family-label'});
+    for(const [st,n,dy]of [[sa,na,32],[sb,nb,94]]){
+      text(saintCase(st),ft+dy,26,{x:cx,font:'gv',upper:0,color:C.accent,fit:W*.37,role:'parent-saint'});
+      text(n,ft+dy+28,21,{x:cx,font:'times',fit:W*.37,role:'parent-name'});
+    }
+    text(addr,ft+162,18,{x:cx,upper:0,fit:W*.36,maxW:W*.36,maxH:Y(36),lh:1.15,role:'family-address'});
   };
   family(W*.27,f.gfs,f.gfn,f.gms,f.gmn,f.ga);family(W*.73,f.bfs,f.bfn,f.bms,f.bmn,f.ba);
-  const notice=photo?552:415;
-  text('Trân trọng báo tin',notice,18,{font:'mont',ls:.10});
-  text('Lễ thành hôn',notice+35,34,{font:'pf',weight:700,ls:.08,color:C.accent,role:'announcement'});
-  text('của con chúng tôi',notice+68,18,{font:'mont',ls:.10});
-  const person=(saint,name,rank,yy)=>{
-    text(saint,yy,23,{font:'pf',ls:.08,color:C.accent,role:'saint'});
-    text(name,yy+51,photo?53:62,{font:C.name,italic:C.name==='pf'?1:0,fit:W*.83,color:C.text,role:'couple-name'});
-    text(rank,yy+92,21,{font:'cg',upper:0,italic:1,role:'family-rank'});
+  const notice=C.notice;
+  text('Trân trọng báo tin',notice,17,{font:'mont',ls:.12});
+  text('Lễ thành hôn',notice+33,C.id==='wine'?42:33,{font:'pf',weight:700,ls:C.id==='rose'?.12:.06,color:C.accent,role:'announcement'});
+  text('của con chúng tôi',notice+64,17,{font:'mont',ls:.10});
+  const person=(saint,name,rank,yy,cx)=>{
+    const ax=W*cx;
+    text(saint,yy,21,{x:ax,font:'pf',ls:.10,color:C.accent,role:'saint'});
+    text(name,yy+C.nameGap,C.nameSize,{x:ax,font:C.name,italic:['pf','nd'].includes(C.name)?1:0,fit:W*C.nameWidth,color:C.text,ls:C.name==='gv'?.015:0,role:'couple-name'});
+    text(rank,yy+C.rankGap,20,{x:ax,font:'cg',upper:0,italic:1,role:'family-rank'});
   };
-  person(f.gs,f.gn,f.grank,photo?668:535);
-  e.push({t:'sym',kind:sym==='none'?'crossring':sym,x:W/2,y:Y(photo?808:715),s:(photo?43:59)*k,color:'gold'});
-  person(f.bs,f.bn,f.brank,photo?861:790);
-  const church=photo?1000:978;
-  text('Thánh lễ hôn phối được cử hành tại',church,20,{font:'times'});
-  text('Thánh Đường '+f.parish,church+39,27,{font:'pf',weight:700,color:C.accent,role:'church'});
-  text(f.churchAddress,church+77,20,{upper:0,maxW:W*.82,maxH:Y(34),lh:1.2,role:'church-address'});
-  eventBand(e,W,Y(1136),f.date,f.time,{k,h:Y(30),color:C.accent});
-  text('Hôn lễ được cử hành tại tư gia nam',1210,21,{font:'times'});
-  eventBand(e,W,Y(1260),f.homeDate,f.homeTime,{k,h:Y(27),color:C.accent,home:true,prefix:true});
+  person(f.gs,f.gn,f.grank,C.groom,C.gx);
+  e.push({t:'sym',kind:sym==='none'?'crossring':sym,x:W*C.sx,y:Y(C.symbol),s:C.symbolSize*k,color:'gold'});
+  person(f.bs,f.bn,f.brank,C.bride,C.bx);
+  const church=C.church;
+  text('Thánh lễ hôn phối được cử hành tại',church,19,{font:'times'});
+  text('Thánh Đường '+f.parish,church+34,26,{font:'pf',weight:700,color:C.accent,role:'church'});
+  text(f.churchAddress,church+66,19,{upper:0,maxW:W*.78,maxH:Y(32),lh:1.15,role:'church-address'});
+  const event=(date,time,cy,home=false)=>{
+    if(C.id==='rose')e.push({t:'rect',x:W*.09,y:Y(cy-25),w:W*.82,h:Y(50),fill:'#f6e3e7',r:25*k});
+    const from=e.length;
+    eventBand(e,W,Y(cy),date,time,{k,h:Y(C.id==='gold'?32:25),color:C.accent,home,prefix:home});
+    const band=e.slice(from);
+    if(C.id==='rose'||C.id==='arch')for(const a of band)if(a.t==='line')a.alpha=0;
+    if(C.id==='gold'){
+      for(const a of band)if(a.t==='text'){
+        if(a.text===dotDate(date)){a.y=Y(cy+12);a.size=37*k;a.fit=W*.57;}
+        else{a.y=Y(cy-19);a.x=a.x<W/2?W*.32:W*.68;a.fit=W*.30;a.size=16*k;}
+      }
+    }
+    if(C.id==='wine')for(const a of band)if(a.t==='text'&&a.text===dotDate(date))a.size=39*k;
+  };
+  event(f.date,f.time,C.mass);
+  text('Hôn lễ được cử hành tại tư gia nam',C.homeLabel,20,{font:'times'});
+  event(f.homeDate,f.homeTime,C.home,true);
   const lunar=String(f.homeLunar??f.lunar??'').replace(/^\s*\(?Nhằm ngày\s*/i,'').replace(/\)\s*$/,'');
-  text(lunar?'(Nhằm ngày '+lunar+')':'',1321,22,{upper:0,italic:1,role:'lunar-date'});
+  text(lunar?'(Nhằm ngày '+lunar+')':'',C.lunar,21,{upper:0,italic:1,role:'lunar-date'});
   return e;
 }
+const INV_STYLES={
+  cream:{id:'cream',bg:'#fffaf0',text:'#443326',accent:'#997444',body:'times',name:'gv',q:108,ft:235,notice:464,groom:585,symbol:747,bride:808,church:980,mass:1115,homeLabel:1192,home:1240,lunar:1313,gx:.5,bx:.5,sx:.5,nameGap:54,rankGap:98,nameSize:64,nameWidth:.83,symbolSize:63},
+  rose:{id:'rose',photo:1,bg:'#fff9fa',text:'#713b4c',accent:'#a54a65',name:'ds',q:85,py:152,ph:216,pw:.88,ft:419,notice:647,groom:756,symbol:890,bride:937,church:1061,mass:1179,homeLabel:1235,home:1280,lunar:1335,gx:.5,bx:.5,sx:.5,nameGap:44,rankGap:79,nameSize:57,nameWidth:.83,symbolSize:40},
+  gold:{id:'gold',photo:1,bg:'#fffdf7',text:'#493927',accent:'#a08248',name:'pf',q:80,py:151,ph:212,pw:.22,ft:417,notice:641,groom:749,symbol:884,bride:930,church:1055,mass:1182,homeLabel:1237,home:1290,lunar:1345,gx:.43,bx:.57,sx:.5,nameGap:45,rankGap:80,nameSize:56,nameWidth:.72,symbolSize:42},
+  arch:{id:'arch',photo:1,bg:'#f0f5f7',text:'#2c4c5e',accent:'#608398',name:'nd',py:43,ph:240,pw:.43,q:333,ft:432,notice:657,groom:758,symbol:887,bride:934,church:1061,mass:1179,homeLabel:1237,home:1282,lunar:1336,gx:.5,bx:.5,sx:.5,nameGap:44,rankGap:78,nameSize:52,nameWidth:.72,symbolSize:40},
+  wine:{id:'wine',bg:'#4d182b',text:'#fff3e1',accent:'#dfbf89',name:'gv',q:110,ft:245,notice:475,groom:602,symbol:764,bride:826,church:994,mass:1126,homeLabel:1200,home:1250,lunar:1325,gx:.44,bx:.56,sx:.5,nameGap:54,rankGap:99,nameSize:67,nameWidth:.80,symbolSize:56}
+};
 const INVT=[
-{id:'inv_cream',n:'Giấy ngà thanh lịch',d:'Không ảnh · chữ serif trên giấy ngà',pal:{bg:'#fffaf1',text:'#302c28',accent:'#8a643b'},b:c=>invitation(c,{id:'cream',bg:'#fffaf1',text:'#302c28',accent:'#8a643b',name:'pf',body:'times'})},
-{id:'inv_rose',n:'Trắng hồng hiện đại',d:'Có ảnh · ảnh ngang phía trên Lời Chúa',pal:{bg:'#fffafb',text:'#572d3a',accent:'#9d4057'},b:c=>invitation(c,{id:'rose',photo:1,bg:'#fffafb',text:'#572d3a',accent:'#9d4057',name:'ds'})},
-{id:'inv_gold',n:'Viền vàng sang trọng',d:'Có ảnh · chân dung tròn, nét vàng',pal:{bg:'#fffdf8',text:'#362c20',accent:'#927038'},b:c=>invitation(c,{id:'gold',photo:1,bg:'#fffdf8',text:'#362c20',accent:'#927038',name:'ds'})},
-{id:'inv_arch',n:'Vòm ánh sáng',d:'Có ảnh · vòm ảnh trên nền ô-liu',pal:{bg:'#f3f5ed',text:'#25392f',accent:'#63734e'},b:c=>invitation(c,{id:'arch',photo:1,bg:'#f3f5ed',text:'#25392f',accent:'#63734e',name:'ds'})},
-{id:'inv_wine',n:'Đỏ vang giao ước',d:'Không ảnh · chữ bay, điểm nhấn đỏ vang',pal:{bg:'#fff8f3',text:'#4b2631',accent:'#8a3d50'},b:c=>invitation(c,{id:'wine',bg:'#fff8f3',text:'#4b2631',accent:'#8a3d50',name:'ds'})},
-];
+{id:'inv_cream',n:'Ấn tín cổ điển',d:'Không ảnh · thư pháp, khung kép, nhành ô-liu',style:'cream'},
+{id:'inv_rose',n:'Dải lụa hồng',d:'Có ảnh · Lời Chúa trên ảnh ngang, dải lịch mềm',style:'rose'},
+{id:'inv_gold',n:'Huy hiệu vàng',d:'Có ảnh · huy hiệu tròn, tên lệch nhịp, lịch tầng',style:'gold'},
+{id:'inv_arch',n:'Vòm thiên thanh',d:'Có ảnh · vòm đứng, nền xanh, nét chữ thanh',style:'arch'},
+{id:'inv_wine',n:'Dạ khúc giao ước',d:'Không ảnh · đỏ vang đậm, ánh vàng, tên so le',style:'wine'},
+].map(t=>{const C=INV_STYLES[t.style];return{...t,pal:{bg:C.bg,text:C.text,accent:C.accent},b:ctx=>invitation(ctx,C)}});
 
 /* The liturgical heading and event footer are shared by every slide.
    Reserve their space before composing photos; no text is painted over faces. */

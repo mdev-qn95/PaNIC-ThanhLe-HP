@@ -25,7 +25,7 @@ const sz=()=>S.mode==='invite'?(ISIZES[S.isize]||ISIZES.share):(SIZES[S.size]||S
 const ratio=()=>{const z=sz();return z.h/z.w};
 function pal(base){const p={...(base||PALS[S.pal]||PALS.ivory)};p.soft=mix(p.bg,p.text,.06);p.dark=lum(p.bg)<.4;p.gold1=mix(p.accent,'#ffffff',.45);p.gold2=mix(p.accent,'#000000',.18);return p}
 function texts(){return{...TEXTS,...S.texts,homeLunar:S.texts.homeLunar??S.texts.lunar??TEXTS.lunar}}
-function fam(k){const p=FP[S.fp]||FP.classic;switch(k){case'display':return[p.display,p.dw];case'serif':return[p.serif,400];case'script':return[p.script,p.script==='Dancing Script'?500:400];case'times':return['Noto Serif',400];case'sig':return['Ephesis',400];case'pf':return['Playfair Display',400];case'mont':return['Montserrat',500];case'ds':return['Dancing Script',500];case'gv':return['Great Vibes',400];case'cg':return['Cormorant Garamond',500];default:return['Montserrat',500]}}
+function fam(k){const p=FP[S.fp]||FP.classic;switch(k){case'display':return[p.display,p.dw];case'serif':return[p.serif,400];case'script':return[p.script,p.script==='Dancing Script'?500:400];case'times':return['Noto Serif',400];case'sig':return['Ephesis',400];case'pf':return['Playfair Display',400];case'mont':return['Montserrat',500];case'nd':return['Noto Serif Display',300];case'ds':return['Dancing Script',500];case'gv':return['Great Vibes',400];case'cg':return['Cormorant Garamond',500];default:return['Montserrat',500]}}
 const slideIndex=sl=>Math.max(0,S.slides.indexOf(sl));
 const photoIndex=(sl,i,n,idx=slideIndex(sl))=>(((sl.id===S.invite.id?0:Math.max(0,idx))*3+i)%n+n)%n;
 const curSlide=()=>S.mode==='invite'?S.invite:S.slides[clamp(S.cur,0,S.slides.length-1)];
@@ -212,6 +212,14 @@ function drawRich(ctx,e,P){const segs=e.segs.map(g=>({...g,text:String(g.text||'
 function drawDecor(ctx,e,P,W,H){
   ctx.save();
   switch(e.t){
+    case'botanical':{
+      ctx.translate(e.x,e.y);ctx.scale(e.flip||1,1);ctx.globalAlpha=e.alpha??.25;
+      ctx.strokeStyle=colorOf(e.color,P);ctx.fillStyle=colorOf(e.color,P);ctx.lineWidth=e.s*.004;
+      ctx.beginPath();ctx.moveTo(0,e.s*.5);ctx.bezierCurveTo(e.s*.28,e.s*.1,-e.s*.08,-e.s*.22,e.s*.12,-e.s*.5);ctx.stroke();
+      for(let j=0;j<9;j++){const p=j/8,yy=e.s*(.44-p*.88),xx=Math.sin(p*Math.PI)*e.s*.10;
+        for(const sign of [-1,1]){ctx.save();ctx.translate(xx,yy);ctx.rotate(sign*.7);ctx.beginPath();ctx.ellipse(sign*e.s*.045,-e.s*.026,e.s*.045,e.s*.016,0,0,Math.PI*2);ctx.fill();ctx.restore();}}
+      break;
+    }
     case'rich':drawRich(ctx,e,P);break;
     case'rframe':{ctx.strokeStyle=colorOf(e.color,P);ctx.lineWidth=e.lw||2;ctx.globalAlpha=e.alpha??1;ctx.beginPath();rr(ctx,e.x,e.y,e.w,e.h,e.r||0);ctx.stroke();break}
     case'blob':{const gr=ctx.createRadialGradient(e.x,e.y,0,e.x,e.y,e.r);gr.addColorStop(0,rgba(e.color,e.alpha||.5));gr.addColorStop(1,rgba(e.color,0));ctx.fillStyle=gr;ctx.fillRect(e.x-e.r,e.y-e.r,e.r*2,e.r*2);break}
