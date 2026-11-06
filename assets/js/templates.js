@@ -37,9 +37,18 @@ const TPL=[
   stack(e,W/2,m+rowH,m+rowH+mid,[{sym,s:80},whenLine(f,{size:24})],W*.86);
   one(W/2,H-m-rowH,H-m,d,f.bs,f.bn,W*.86);
   return e}},
-{id:'verse',n:'Lời Chúa',d:'Câu Kinh Thánh trên ảnh',b({W,H,m,f,v,land,sym}){
-  const e=[I(0,0,W,H,{bleed:1}),{t:'shade',x:0,y:land?H*.1:H*.3,w:W,h:land?H*.9:H*.7,dir:'up',alpha:.8}],w=land?W*.72:W*.84,sz=land?40:52;
-  stack(e,W/2,land?m*.5:H*.38,H-m*.7,[{sym,s:60,color:'white'},quote(v,sz,w,{color:W1,shadow:true}),ref(v,{color:W1,size:24}),{div:1,color:'white'},...names(f,onPhoto({size:land?46:44}))],w,'center',1,'bottom');
+{id:'verse',n:'Lời Chúa',d:'Lời Chúa phía trên hoặc bên cạnh ảnh',b({W,H,m,f,v,land,sym}){
+  const e=[];
+  if(land){
+    const pw=W*.55,w=W*.37,x=W*.775;
+    e.push(I(0,0,pw,H,{bleed:1}));
+    stack(e,x,m*.8,H-m*.8,[{sym,s:48},quote(v,34,w,{maxH:H*.33}),ref(v,{size:21}),{div:1},...names(f,{size:42})],w);
+  }else{
+    const top=H*.30,w=W*.84;
+    e.push(I(0,top,W,H-top,{bleed:1}),{t:'shade',x:0,y:H*.66,w:W,h:H*.34,dir:'up',alpha:.82});
+    stack(e,W/2,m*.6,top-m*.6,[{sym,s:46},quote(v,42,w,{maxH:top*.58}),ref(v,{size:22})],w);
+    stack(e,W/2,H*.70,H-m*.7,names(f,onPhoto({size:48})),w,'center',1,'bottom');
+  }
   return e}},
 {id:'panel',n:'Khung kính giữa ảnh',d:'Ảnh nền, thẻ chữ trong mờ',b({W,H,m,f,land,sym}){
   const e=[I(0,0,W,H,{bleed:1})],pw=land?W*.42:W*.78,ph=land?H*.66:H*.4,px=(W-pw)/2,py=land?(H-ph)/2:H-m*1.2-ph;
@@ -86,8 +95,9 @@ const TPL=[
   const e=[];
   if(land){const pw=W*.52;e.push(I(W-pw,0,pw,H,{bleed:1}));e.push({t:'fade',x:W-pw,y:0,w:pw*.25,h:H,dir:'left'});const w=W-pw-m*1.8;
     stack(e,m*.9+w/2,m,H-m,[{sym,s:50},quote(v,40,w,{color:'text'}),ref(v,{size:22}),{div:1},...names(f,{size:44})],w);return e}
-  const ph=H*.5;e.push(I(0,0,W,ph,{bleed:1}));e.push({t:'fade',x:0,y:ph*.7,w:W,h:ph*.3+1,dir:'down'});
-  stack(e,W/2,ph+10,H-m*.9,[{sym,s:54},quote(v,46,W*.82),ref(v,{size:24}),{div:1},...names(f,{size:46})],W*.84);
+  const top=H*.44;
+  e.push(I(0,top,W,H-top,{bleed:1}));
+  stack(e,W/2,m*.7,top-m*.7,[{sym,s:48},quote(v,40,W*.82,{maxH:top*.38}),ref(v,{size:22}),{div:1},...names(f,{size:44})],W*.84);
   return e}},
 {id:'sacrament',n:'Bí tích Hôn phối',d:'Trang trọng như thiệp, có ảnh',b({W,H,m,f,v,land,sym}){
   const o=m*.5,e=[{t:'frame',x:o,y:o,w:W-2*o,h:H-2*o,lw:1.8,gap:11,corner:24}];
