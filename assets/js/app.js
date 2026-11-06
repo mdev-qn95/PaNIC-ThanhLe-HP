@@ -15,6 +15,11 @@ function draw(now){cancelAnimationFrame(raf);if(now===true)doDraw();else raf=req
 function doDraw(){lastSlots=render(cv.getContext('2d'),cssW,cssH,{preview:1,sel,dpr});syncSlotbar();stripSoon()}
 new ResizeObserver(()=>fitStage()).observe(stage);
 
+/* Safari can smart-zoom the page on a second tap even inside the canvas.
+   Cancel only the preview's native gesture; Pointer Events still pan/pinch photos. */
+dev.addEventListener('touchend',ev=>{if(ev.cancelable)ev.preventDefault()},{passive:false});
+dev.addEventListener('dblclick',ev=>ev.preventDefault());
+
 /* ===== Chạm · kéo · zoom ảnh trong khung ===== */
 const ptrs=new Map();let drag=null,pinch=null;
 const toD=ev=>{const r=cv.getBoundingClientRect();return{x:(ev.clientX-r.left)/r.width*1000,y:(ev.clientY-r.top)/r.width*1000}};
