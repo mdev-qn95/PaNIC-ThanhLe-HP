@@ -15,7 +15,7 @@ const fs=require('node:fs/promises');
     await page.evaluate(()=>{photos=[];SLOTS={}});
     await page.locator('#file').setInputFiles(Array.from({length:count},(_,i)=>({name:'photo-'+i+'.png',mimeType:'image/png',buffer:Buffer.from(photo,'base64')})));
     await page.waitForFunction(n=>photos.length===n,count);
-    for(const id of ['inv_rose','inv_gold','inv_arch']){
+    for(const id of ['inv_rose','inv_gold']){
      await page.locator('.tcard[data-id="'+id+'"]').click();
      const ok=await page.evaluate(()=>{draw(true);const x=cv.getContext('2d'),a=x.getImageData(0,0,cv.width,cv.height).data;let n=0;for(let i=0;i<a.length;i+=4)if((a[i]<15&&a[i+1]>190&&a[i+2]>130)||(a[i]>200&&a[i+1]<15&&a[i+2]>80))n++;return n>1000});
      assert.ok(ok,`${name} ${id} ${count} uploaded photos missing`);
@@ -24,9 +24,9 @@ const fs=require('node:fs/promises');
      await page.evaluate(()=>openTab('tpl'));checks++;
     }
    }
-   await page.evaluate(()=>{photos=[];SLOTS={};S.demo=true;S.invite.tpl='inv_cream';fitStage()});
+   await page.evaluate(()=>{photos=[];SLOTS={};S.demo=true;S.invite.tpl='inv_rose';fitStage()});
    if(process.env.OUTPUT_DIR){await fs.mkdir(process.env.OUTPUT_DIR,{recursive:true});await page.screenshot({path:process.env.OUTPUT_DIR+'/'+name+'-mobile.png'});
-    for(const id of ['inv_cream','inv_rose','inv_gold','inv_arch','inv_wine']){
+    for(const id of ['inv_rose','inv_gold']){
      const b=await page.evaluate(async id=>{S.invite.tpl=id;S.isize='share';S.fmt='image/png';const b=await renderBlob(-1);return Array.from(new Uint8Array(await b.arrayBuffer()))},id);await fs.writeFile(process.env.OUTPUT_DIR+'/'+id+'.png',Buffer.from(b));
     }
    }

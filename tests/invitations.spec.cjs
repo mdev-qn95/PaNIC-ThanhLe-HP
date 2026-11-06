@@ -15,7 +15,7 @@ const output=process.env.OUTPUT_DIR;
     await page.goto(base,{waitUntil:'networkidle'});await page.evaluate(()=>document.fonts.ready);
     await page.locator('[data-m="invite"]').click();
     const ids=await page.locator('.tcard').evaluateAll(es=>es.map(e=>e.dataset.id));
-    assert.equal(ids.length,5);
+    assert.equal(ids.length,2);
     if(output)await fs.mkdir(output,{recursive:true});
     let exports=0;
     for(const id of ids){
@@ -49,8 +49,6 @@ const output=process.env.OUTPUT_DIR;
         const els=layout(1000,1414,{...S.invite,tpl:t.id});
         const text=els.filter(e=>e.t==='text'||e.t==='rich');
         if(!text.every(e=>Number.isFinite(e.x)&&Number.isFinite(e.y)))throw Error('Invalid text position');
-        if(['inv_cream','inv_wine'].includes(t.id)&&els.some(e=>e.t==='img'))throw Error('Photo in photo-free card');
-        if(t.id==='inv_arch'&&!els.some(e=>e.t==='img'))throw Error('Missing photo in arch card');
         for(const key of Object.keys(SYMBOLS)){
           const c=document.createElement('canvas');c.width=280;c.height=280;drawSymbol(c.getContext('2d'),key,140,140,200,'gold',pal(t.pal));symbols++;
         }

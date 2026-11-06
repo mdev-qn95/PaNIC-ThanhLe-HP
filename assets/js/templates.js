@@ -8,13 +8,7 @@ const quote=(v,size,w,o={})=>{const q='“'+v.t+'”';return{text:q,font:'serif'
 /* ngày (chữ có chân, giãn nhẹ) + giáo xứ (nghiêng) */
 const when=(f,o={})=>{const z=o.size||26;return[{text:f.date,font:'display',size:z,ls:.16,color:o.color,shadow:o.shadow,pad:0},{text:f.parish,font:'serif',italic:1,size:z*.95,color:o.color,shadow:o.shadow}]};
 const whenLine=(f,o={})=>({text:`${f.date}  —  ${f.parish}`,font:'serif',italic:1,size:o.size||26,ls:.04,color:o.color,shadow:o.shadow});
-const initial=s=>{const w=String(s||'').trim().split(/\s+/);return(w[w.length-1]||'')[0]||''};
 const onPhoto=(o={})=>({color:W1,saintColor:W1,ampColor:W1,shadow:true,...o});
-function mosaic5(e,x,y,w,h,g){
-  if(w>h){const bw=w*.5-g/2,cw=(w-bw-g*2)/2,ch=(h-g)/2;e.push(I(x,y,bw,h));for(let k=0;k<4;k++)e.push(I(x+bw+g+(k%2)*(cw+g),y+Math.floor(k/2)*(ch+g),cw,ch))}
-  else{const bh=h*.5-g/2,cw=(w-g)/2,ch=(h-bh-g*2)/2;e.push(I(x,y,w,bh));for(let k=0;k<4;k++)e.push(I(x+(k%2)*(cw+g),y+bh+g+Math.floor(k/2)*(ch+g),cw,ch))}
-}
-
 const TPL=[
 {id:'waiting',n:'Chờ thánh lễ',d:'Ảnh nền · giờ bắt đầu',b({W,H,m,f,land,sym}){
   const e=[I(0,0,W,H,{bleed:1}),{t:'shade',x:0,y:land?H*.15:H*.35,w:W,h:land?H*.85:H*.65,dir:'up',alpha:.78},{t:'shade',x:0,y:0,w:W,h:H*.25,dir:'down',alpha:.35}],w=land?W*.72:W*.86;
@@ -27,16 +21,6 @@ const TPL=[
   else{const ph=H*.58;e.push(I(W*.06,m*.8,W*.88,ph,{r:6,frame:2.4,frame2:10}));x=W/2;pw=W*.86;y0=m*.8+ph+24;y1=H-m*.8}
   stack(e,x,y0,y1,[{sym,s:56},...names(f,{size:land?60:54}),{div:1},...when(f,{size:24})],pw);
   return e}},
-{id:'couple',n:'Đôi ảnh tròn',d:'Mỗi người một ảnh',b({W,H,m,f,land,sym}){
-  const e=[],one=(cx,y0,y1,d,st,nm,w)=>{e.push(I(cx-d/2,y0,d,d,{shape:'circle',ring:7}));
-    stack(e,cx,y0+d+6,y1,[{text:st,font:'display',upper:1,ls:.28,size:22,color:'accent'},{text:nm,font:'script',size:52,lh:1.15}],w)};
-  if(land){const d=Math.min(H*.62,W*.33),top=m*.7,bl=H-m*.5;one(W*.27,top,bl-36,d,f.gs,f.gn,W*.42);one(W*.73,top,bl-36,d,f.bs,f.bn,W*.42);
-    e.push({t:'sym',kind:sym,x:W/2,y:top+d/2,s:96,color:'gold'});e.push({...whenLine(f,{size:24}),t:'text',x:W/2,y:bl,align:'center',fit:W*.8});return e}
-  const mid=150,rowH=(H-2*m-mid)/2,d=Math.min(W*.7,rowH*.72);
-  one(W/2,m,m+rowH,d,f.gs,f.gn,W*.86);
-  stack(e,W/2,m+rowH,m+rowH+mid,[{sym,s:80},whenLine(f,{size:24})],W*.86);
-  one(W/2,H-m-rowH,H-m,d,f.bs,f.bn,W*.86);
-  return e}},
 {id:'verse',n:'Lời Chúa',d:'Câu Kinh Thánh trên ảnh',b({W,H,m,f,v,land,sym}){
   const e=[I(0,0,W,H,{bleed:1}),{t:'shade',x:0,y:land?H*.1:H*.3,w:W,h:land?H*.9:H*.7,dir:'up',alpha:.8}],w=land?W*.72:W*.84,sz=land?40:52;
   stack(e,W/2,land?m*.5:H*.38,H-m*.7,[{sym,s:60,color:'white'},quote(v,sz,w,{color:W1,shadow:true}),ref(v,{color:W1,size:24}),{div:1,color:'white'},...names(f,onPhoto({size:land?46:44}))],w,'center',1,'bottom');
@@ -46,41 +30,9 @@ const TPL=[
   e.push({t:'rect',x:px,y:py,w:pw,h:ph,fill:'bg',alpha:.86,r:6},{t:'rframe',x:px+10,y:py+10,w:pw-20,h:ph-20,r:3,lw:1.2,color:'accent',alpha:.8});
   stack(e,W/2,py+26,py+ph-26,[{sym,s:50},...names(f,{size:50}),{div:1,w:120},...when(f,{size:22})],pw*.86);
   return e}},
-{id:'collage',n:'Kỷ niệm',d:'Năm ảnh + tên',b({W,H,m,g,f,v,land,sym}){
-  const e=[];let cx,y0,y1,w;
-  if(land){const aw=W*.7;mosaic5(e,m*.5,m*.5,aw,H-m,g);cx=aw+m*.5+(W-aw-m*.5)/2;w=W-aw-m*1.6;y0=m;y1=H-m}
-  else{const ah=H*.68;mosaic5(e,m*.5,m*.5,W-m,ah,g);cx=W/2;w=W*.86;y0=ah+m*.5+14;y1=H-m*.8}
-  stack(e,cx,y0,y1,[{sym,s:48},...names(f,{size:land?42:46}),{div:1,w:120},ref(v,{size:20})],w);
-  return e}},
 {id:'frame',n:'Khung viền trắng',d:'Ảnh toàn khung, viền kép',b({W,H,m,f,land,sym}){
   const o=m*.45,e=[I(0,0,W,H,{bleed:1}),{t:'shade',x:0,y:H*.45,w:W,h:H*.55,dir:'up',alpha:.75},{t:'rframe',x:o,y:o,w:W-2*o,h:H-2*o,lw:2,color:'#ffffff',alpha:.9},{t:'rframe',x:o+12,y:o+12,w:W-2*o-24,h:H-2*o-24,lw:.9,color:'#ffffff',alpha:.75}];
   stack(e,W/2,land?m:H*.5,H-m*1.1,[{sym,s:46,color:'white'},...names(f,onPhoto({size:land?54:52})),{gap:2},whenLine(f,{color:W1,shadow:true,size:22})],land?W*.8:W*.84,'center',1,'bottom');
-  return e}},
-{id:'duo',n:'Đôi ảnh dọc',d:'Hai ảnh song song',b({W,H,m,g,f,land,sym}){
-  const e=[];
-  if(land){const pw=W*.3,ph=H-m*1.2,y=m*.6;e.push(I(m*.6,y,pw,ph,{r:4,frame:2.4,frame2:8}));e.push(I(W-m*.6-pw,y,pw,ph,{r:4,frame:2.4,frame2:8}));
-    stack(e,W/2,m,H-m,[{sym,s:84},...names(f,{size:50}),{div:1},...when(f,{size:22})],W-2*(m*.6+pw)-60);return e}
-  const top=m*.7,ph=H*.62,pw=(W-2*m*.7-g*2)/2;e.push(I(m*.7,top,pw,ph,{r:4,frame:2.4,frame2:8}));e.push(I(W-m*.7-pw,top,pw,ph,{r:4,frame:2.4,frame2:8}));
-  e.push({t:'sym',kind:sym,x:W/2,y:top+ph+56,s:78,color:'gold'});
-  stack(e,W/2,top+ph+100,H-m*.8,[...names(f,{size:52}),{div:1},whenLine(f,{size:24})],W*.86);
-  return e}},
-{id:'grid',n:'Sáu khung',d:'Lưới ảnh + dải tên',b({W,H,m,g,f,land,sym}){
-  const e=[],o=m*.5,cols=land?3:2,rows=land?2:3,bandH=land?H*.26:H*.2,gw=(W-2*o-(cols-1)*g)/cols,gh=(H-2*o-bandH-(rows-1)*g)/rows;
-  const by=land?o+gh+g/2:o+gh*2+g*1.5;let k=0;
-  for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){let y=o+r*(gh+g);if(land?r>=1:r>=2)y+=bandH;e.push(I(o+c*(gw+g),y,gw,gh));k++}
-  e.push({t:'rect',x:0,y:by,w:W,h:bandH,fill:'bg'});
-  if(land){stack(e,W*.27,by+8,by+bandH-8,[{text:f.gs,font:'display',upper:1,ls:.28,size:20,color:'accent'},{text:f.gn,font:'script',size:50}],W*.4);
-    e.push({t:'sym',kind:sym,x:W/2,y:by+bandH/2,s:70,color:'gold'});
-    stack(e,W*.73,by+8,by+bandH-8,[{text:f.bs,font:'display',upper:1,ls:.28,size:20,color:'accent'},{text:f.bn,font:'script',size:50}],W*.4)}
-  else stack(e,W/2,by+10,by+bandH-10,[...names(f,{size:44}),whenLine(f,{size:20})],W*.86);
-  return e}},
-{id:'monogram',n:'Chữ lồng',d:'Ảnh + chữ cái đầu hai tên',b({W,H,m,f,v,land,sym}){
-  const a=initial(f.gn).toLocaleUpperCase('vi'),b=initial(f.bn).toLocaleUpperCase('vi'),e=[];
-  const box=(cx,cy,sz)=>{e.push({t:'text',text:a,x:cx-sz*.56,y:cy,font:'display',size:sz,color:'accent',align:'center',noScale:1});e.push({t:'text',text:b,x:cx+sz*.56,y:cy,font:'display',size:sz,color:'accent',align:'center',noScale:1});
-    e.push({t:'sym',kind:sym,x:cx,y:cy+sz*.04,s:sz*.5,color:'gold'})};
-  if(land){e.push(I(0,0,W*.56,H,{bleed:1}));box(W*.78,H*.28,H*.26);stack(e,W*.78,H*.46,H-m*.8,[...names(f,{size:46}),{div:1},whenLine(f,{size:20})],W*.38);return e}
-  e.push(I(0,0,W,H*.55,{bleed:1}));e.push({t:'rect',x:W/2-W*.22,y:H*.55-W*.13,w:W*.44,h:W*.26,fill:'bg',r:W*.13});box(W/2,H*.55,W*.17);
-  stack(e,W/2,H*.55+W*.16,H-m*.8,[...names(f,{size:58}),{div:1},whenLine(f,{size:24})],W*.86);
   return e}},
 {id:'covenant',n:'Giao ước',d:'Lời Chúa + ảnh nửa khung',b({W,H,m,g,f,v,land,sym}){
   const e=[];
@@ -112,66 +64,14 @@ const TPL=[
   return e}},
 ];
 
-/* ===== Thiệp mời tham dự thánh lễ hôn phối — 5 bố cục khác nhau ===== */
-const splitAddr=a=>{const p=String(a||'').split(/\s+-\s+/);return[(p[0]||'').trim(),p.slice(1).join(' - ')]};
+/* ===== Hai mẫu thiệp mời ===== */
 function invKit(W,H){const U=H/1414,X=W/1000,fs=k=>k*Math.min(U,X),y=k=>k*U,e=[];
   const T=(text,x,yy,o={})=>e.push({t:'text',text,x,y:yy,align:'center',font:'times',noScale:1,fit:W*.86,...o,size:fs(o.size||26)});
   const R=(segs,x,yy,size,o={})=>e.push({t:'rich',segs,x,y:yy,size:fs(size),align:'center',fit:W*.42,...o});
   const L=(x1,yy,x2,o={})=>e.push({t:'line',x1,y1:yy,x2,y2:yy,lw:o.lw||1.4,color:o.color,alpha:o.alpha??1,dash:o.dash});
   return{e,U,X,fs,y,T,R,L}}
 
-/* Gia đình hai bên: giữ đủ tên thánh, họ tên cha mẹ và hai dòng địa chỉ. */
-function invFamilies(K,W,f,top,C){
-  const {T,R,y}=K;
-  const one=(cx,label,sa,na,sb,nb,addr)=>{
-    T(label,cx,y(top),{font:'mont',size:15,ls:.2,upper:1,color:C.accent,fit:W*.4});
-    const parent=(saint,name,yy)=>R([{text:saint+' ',font:'cg',italic:1},{text:name,font:'times',weight:400}],cx,y(yy),25,{color:C.text,fit:W*.4});
-    parent(sa,na,top+37);parent(sb,nb,top+73);
-    const [first,last]=splitAddr(addr);
-    T(first,cx,y(top+112),{font:'cg',size:21,color:C.mute,fit:W*.4});
-    if(last)T(last,cx,y(top+140),{font:'cg',size:20,color:C.mute,fit:W*.4});
-  };
-  one(W*.27,'Nhà trai',f.gfs,f.gfn,f.gms,f.gmn,f.ga);
-  one(W*.73,'Nhà gái',f.bfs,f.bfn,f.bms,f.bmn,f.ba);
-}
-function invVerse(K,W,v,top,C){
-  const {T,y,fs}=K;
-  T(`“${v.t}”`,W/2,y(top),{font:'cg',italic:1,size:25,color:C.mute,maxW:W*.8,maxH:fs(74),lh:1.25,fit:W*.8});
-  T(v.r,W/2,y(top+59),{font:'cg',size:19,color:C.accent,ls:.06});
-}
-/* 1 · Giấy ngà: chữ serif chủ đạo, dấu ấn đức tin và nhịp chữ cân đối; không có ảnh. */
-function invCream({W,H,f,v,sym}){
-  const K=invKit(W,H),{e,T,L,y,fs}=K,C={text:'#302c28',accent:'#8a643b',mute:'#51473d'};
-  e.push({t:'rect',x:0,y:0,w:W,h:H,fill:'#fffaf1'},
-    {t:'rframe',x:W*.045,y:y(35),w:W*.91,h:H-y(70),r:fs(3),lw:fs(1.2),color:'#b49a75'},
-    {t:'sym',kind:sym,x:W/2,y:y(100),s:fs(70),color:'gold'});
-  T('THÁNH LỄ HÔN PHỐI',W/2,y(176),{font:'mont',size:22,ls:.15,color:C.accent});
-  T(f.inv1,W/2,y(230),{font:'times',italic:1,size:26,color:C.mute});
-  T(f.inv2,W/2,y(271),{font:'mont',size:17,upper:1,ls:.06,color:C.text});
-  const person=(saint,name,rank,yy)=>{
-    T(saint,W/2,y(yy),{font:'mont',size:18,upper:1,ls:.16,color:C.accent});
-    T(name,W/2,y(yy+56),{font:'pf',size:54,color:C.text,fit:W*.82});
-    T(rank,W/2,y(yy+101),{font:'times',italic:1,size:23,color:C.mute});
-  };
-  person(f.gs,f.gn,f.grank,330);
-  T('&',W/2,y(478),{font:'pf',italic:1,size:37,color:C.accent});
-  person(f.bs,f.bn,f.brank,533);
-  L(W*.18,y(680),W*.82,{color:'#b49a75',lw:fs(1)});
-  T(f.inv3,W/2,y(720),{font:'times',italic:1,size:24,color:C.mute});
-  T(f.parish,W/2,y(770),{font:'pf',size:34,color:C.text,fit:W*.82});
-  T(f.time,W*.29,y(842),{font:'pf',size:40,color:C.accent,fit:W*.29});
-  T(dotDate(f.date),W*.68,y(842),{font:'pf',size:36,color:C.accent,fit:W*.39});
-  T('GIỜ CỬ HÀNH',W*.29,y(887),{font:'mont',size:14,ls:.1,color:C.mute});
-  T(weekday(f.date),W*.68,y(887),{font:'mont',size:14,upper:1,ls:.1,color:C.mute});
-  if(f.lunar)T(f.lunar,W/2,y(936),{font:'times',italic:1,size:21,color:C.mute});
-  L(W*.18,y(979),W*.82,{color:'#b49a75',lw:fs(1)});
-  invFamilies(K,W,f,1017,C);
-  T(`“${v.t}”`,W/2,y(1221),{font:'times',italic:1,size:22,color:C.mute,maxW:W*.8,maxH:fs(64),lh:1.3});
-  T(v.r,W/2,y(1277),{font:'times',size:18,color:C.accent});
-  T('Trân trọng kính mời',W/2,y(1341),{font:'pf',italic:1,size:30,color:C.accent});
-  return e}
 
-/* 2 · Trắng hồng hiện đại — ảnh lớn trên đầu, dải ngày tháng kẻ chỉ, chữ không chân + chữ bay */
 function invRose({W,H,f,v,sym}){
   const K=invKit(W,H),{e,T,R,L,y,fs}=K,C={text:'#3a1f27',rose:'#b3243f',soft:'#d9768a'};
   e.push({t:'rect',x:0,y:0,w:W,h:H,fill:'#fffafb'},{t:'blob',x:W*.05,y:H*.62,r:W*.55,color:'#f6b6c3',alpha:.4},{t:'blob',x:W*.98,y:H*.9,r:W*.6,color:'#f4a9b8',alpha:.4},{t:'paper',alpha:.2});
@@ -194,7 +94,7 @@ function invRose({W,H,f,v,sym}){
   if(f.lunar)T(f.lunar,W/2,y(1372),{font:'cg',italic:1,size:20,color:'#8a6670'});
   return e}
 
-/* 3 · Trắng viền vàng sang trọng — ảnh tròn giữa thiệp, khối lịch ngày lớn, chữ Playfair + Cormorant */
+
 function invGold({W,H,f,v,sym}){
   const K=invKit(W,H),{e,T,R,L,y,fs}=K,C={text:'#2a2118',gold:'#a8823f',mute:'#7a6a55'};
   e.push({t:'rect',x:0,y:0,w:W,h:H,fill:'#fffdf8'},{t:'glow',x:W/2,y:H*.3,r:W*.9,color:'accent',alpha:.08},{t:'frame',x:W*.04,y:H*.03,w:W*.92,h:H*.94,lw:2.4,gap:14,corner:30});
@@ -218,59 +118,8 @@ function invGold({W,H,f,v,sym}){
   if(f.lunar)T(`(${f.lunar})`,W/2,y(1340),{font:'cg',italic:1,size:20,color:C.mute,fit:W*.84});
   return e}
 
-/* 4 · Vòm ánh sáng: một ảnh vòm lớn, đôi tên cạnh ảnh, gia đình và lịch lễ bên dưới. */
-function invArch({W,H,f,v,sym}){
-  const K=invKit(W,H),{e,T,L,y,fs}=K,C={text:'#25392f',accent:'#75815b',mute:'#687266'};
-  e.push({t:'rect',x:0,y:0,w:W,h:H,fill:'#f3f5ed'},{t:'paper',alpha:.16},
-    {t:'rframe',x:W*.035,y:y(32),w:W*.93,h:H-y(64),r:fs(6),lw:fs(1),color:'#aab398'});
-  e.push(I(W*.075,y(82),W*.4,y(560),{shape:'arch',ring:fs(5)}));
-  const cx=W*.73;
-  e.push({t:'sym',kind:sym,x:cx,y:y(154),s:fs(73),color:'gold'});
-  const person=(st,name,rank,yy)=>{
-    T(st,cx,y(yy),{font:'mont',size:15,upper:1,ls:.18,color:C.accent,fit:W*.4});
-    T(name,cx,y(yy+55),{font:'cg',size:46,color:C.text,fit:W*.39});
-    T(rank,cx,y(yy+96),{font:'cg',italic:1,size:21,color:C.mute,fit:W*.4});
-  };
-  person(f.gs,f.gn,f.grank,235);T('&',cx,y(382),{font:'gv',size:42,color:C.accent});person(f.bs,f.bn,f.brank,423);
-  T(f.title,cx,y(589),{font:'mont',size:15,upper:1,ls:.12,color:C.accent,fit:W*.38});
-  invVerse(K,W,v,710,C);
-  T(f.inv1,W/2,y(819),{font:'gv',size:40,color:C.accent});
-  T(f.inv2,W/2,y(863),{font:'mont',size:17,upper:1,ls:.13,color:C.text});
-  invFamilies(K,W,f,925,C);L(W*.16,y(1110),W*.84,{color:C.accent,lw:fs(.8)});
-  T(f.inv3,W/2,y(1153),{font:'cg',italic:1,size:24,color:C.mute});
-  T(f.parish,W/2,y(1195),{font:'pf',size:30,color:C.text,fit:W*.82});
-  T(`${f.time}  ·  ${weekday(f.date)}  ·  ${dotDate(f.date)}`,W/2,y(1256),{font:'mont',size:22,color:C.accent,fit:W*.82});
-  if(f.lunar)T(f.lunar,W/2,y(1310),{font:'cg',italic:1,size:22,color:C.mute,fit:W*.82});
-  return e}
-
-/* 5 · Đỏ vang giao ước: ấn đức tin, đôi tên lớn và dải lịch; không có ảnh. */
-function invWine({W,H,f,v,sym}){
-  const K=invKit(W,H),{e,T,L,y,fs}=K,C={text:'#4b2631',accent:'#8a3d50',mute:'#8a7275'};
-  e.push({t:'rect',x:0,y:0,w:W,h:H,fill:'#fff8f3'},{t:'paper',alpha:.12},
-    {t:'rframe',x:W*.036,y:y(34),w:W*.928,h:H-y(68),r:fs(2),lw:fs(2.2),color:C.accent});
-  T(f.inv1,W/2,y(87),{font:'mont',size:19,upper:1,ls:.24,color:C.accent});
-  T(f.inv2,W/2,y(132),{font:'cg',italic:1,size:29,color:C.mute});
-  e.push({t:'sym',kind:sym,x:W/2,y:y(224),s:fs(91),color:'gold'});
-  const person=(st,name,rank,yy)=>{
-    T(st,W/2,y(yy),{font:'mont',size:17,upper:1,ls:.26,color:C.accent});
-    T(name,W/2,y(yy+60),{font:'cg',size:66,color:C.text,fit:W*.8});
-    T(rank,W/2,y(yy+107),{font:'cg',italic:1,size:22,color:C.mute});
-  };
-  person(f.gs,f.gn,f.grank,320);T('&',W/2,y(470),{font:'gv',size:42,color:C.accent});person(f.bs,f.bn,f.brank,510);
-  e.push({t:'rect',x:W*.085,y:y(673),w:W*.83,h:y(160),fill:'#f4e6e5',r:fs(6)});
-  T(dotDate(f.date),W/2,y(727),{font:'pf',size:57,color:C.accent,fit:W*.75});
-  T(`${f.time}  ·  ${weekday(f.date)}`,W/2,y(793),{font:'mont',size:19,ls:.16,upper:1,color:C.text,fit:W*.75});
-  T(f.inv3,W/2,y(882),{font:'cg',italic:1,size:24,color:C.mute});
-  T(f.parish,W/2,y(930),{font:'pf',size:31,color:C.text,fit:W*.82});
-  invVerse(K,W,v,1025,C);L(W*.25,y(1114),W*.75,{color:C.accent,lw:fs(.8)});
-  invFamilies(K,W,f,1150,C);
-  if(f.lunar)T(f.lunar,W/2,y(1360),{font:'cg',italic:1,size:21,color:C.mute,fit:W*.8});
-  return e}
 
 const INVT=[
-{id:'inv_cream',n:'Giấy ngà thanh lịch',d:'Không ảnh · serif tinh tế',pal:{bg:'#fbf7ee',text:'#32291f',accent:'#9d7a43'},b:invCream},
 {id:'inv_rose',n:'Trắng hồng hiện đại',d:'Ảnh lớn · dải ngày kẻ chỉ',pal:{bg:'#fffafb',text:'#2e1a21',accent:'#b3243f'},b:invRose},
 {id:'inv_gold',n:'Viền vàng sang trọng',d:'Ảnh tròn · khối lịch',pal:{bg:'#fffdf8',text:'#2a2118',accent:'#a8823f'},b:invGold},
-{id:'inv_arch',n:'Vòm ánh sáng',d:'Có ảnh · xanh ô-liu',pal:{bg:'#f3f5ed',text:'#25392f',accent:'#75815b'},b:invArch},
-{id:'inv_wine',n:'Đỏ vang giao ước',d:'Không ảnh · chữ lớn',pal:{bg:'#fff8f3',text:'#4b2631',accent:'#8a3d50'},b:invWine},
 ];

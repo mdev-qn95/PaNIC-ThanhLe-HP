@@ -20,5 +20,5 @@ const {chromium}=require('playwright');const assert=require('node:assert/strict'
   }
   return{colors,exports};
  },ids);
- assert.deepEqual(report,{colors:8,exports:40});assert.deepEqual(errors,[]);console.log(report);
+ assert.deepEqual(report,{colors:8,exports:16});assert.deepEqual(errors,[]);console.log(report);
 }finally{await browser.close()}})().catch(e=>{console.error(e);process.exitCode=1});

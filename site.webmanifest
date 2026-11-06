@@ -1,2 +1,26 @@
-{"name":"PaNIC Thánh Lễ Hôn Phối","short_name":"PaNIC Thánh Lễ HP","start_url":"/","display":"standalone","background_color":"#fdf6f7","theme_color":"#fdf6f7","lang":"vi",
- "icons":[{"src":"/apple-touch-icon.png","sizes":"180x180","type":"image/png"},{"src":"/icon-512.png","sizes":"512x512","type":"image/png"},{"src":"/favicon.svg","sizes":"any","type":"image/svg+xml"}]}
+{
+  "name": "PaNIC Thánh Lễ Hôn Phối",
+  "short_name": "PaNIC Thánh Lễ HP",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fdf6f7",
+  "theme_color": "#fdf6f7",
+  "lang": "vi",
+  "icons": [
+    {
+      "src": "/icon-192.png?v=20261107-catalog-v2",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png?v=20261107-catalog-v2",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.svg?v=20261107-catalog-v2",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

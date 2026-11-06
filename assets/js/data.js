@@ -51,7 +51,10 @@ const VERSES=[
 ];
 
 /* ===== Biểu tượng đức tin ===== */
-const SYMBOLS={ref_covenant:'Nến hoa & đôi tay',ref_scripture:'Kinh Thánh & cành lá',ref_bells:'Nến & chuông cưới',ref_lilies:'Nến hoa ly & đôi tay',crossring:'Thánh giá & đôi nhẫn',chalice:'Chén Thánh',wreath:'Thánh giá & cành ô-liu',dove:'Chúa Thánh Thần',unity:'Nến hiệp nhất',hearts:'Hai trái tim & Thánh giá',bible:'Lời Chúa',church:'Thánh đường',rosary:'Chuỗi Mân Côi',trinity:'Ba vòng hiệp nhất',shield:'Khiên đức tin',none:'Không dùng'};
+const SYMBOLS={ref_covenant:'Nến hoa & đôi tay',ref_scripture:'Kinh Thánh & cành lá',ref_bells:'Nến & chuông cưới',ref_lilies:'Nến hoa ly & đôi tay'};
+const DEFAULT_SYMBOL='ref_covenant';
+const SLIDE_TEMPLATE_IDS=['waiting','welcome','verse','panel','frame','covenant','sacrament','poster','emblem','thanks'];
+const INVITE_TEMPLATE_IDS=['inv_rose','inv_gold'];
 
 /* ===== Nội dung minh hoạ hư cấu — không dùng thông tin của gia đình thật ===== */
 const TEXTS={
