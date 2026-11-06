@@ -121,7 +121,7 @@ function symIcon(c,kind){const x=c.getContext('2d'),d=2;c.width=58*d;c.height=58
 function renderPanel(){
   const P=$('#panel'),peek=mob()&&sheet.dataset.mode==='peek',sl=curSlide();
   const inv=S.mode==='invite',LT=inv?INVT:TPL;
-  const T0={tpl:inv?['Kiểu thiệp',`${INVT.length} kiểu`]:['Mẫu ảnh',`${TPL.length} mẫu`],photo:['Ảnh',photos.length?`${photos.length} ảnh`:'đang dùng ảnh mẫu'],text:['Nội dung',inv?'cha mẹ hai bên · thánh lễ':'tên thánh · họ tên · thánh lễ'],verse:['Lời Chúa & biểu tượng',inv?'trên thiệp':'của ảnh này'],color:['Phong cách','màu · font'],show:['Kích thước',inv?'thiệp điện tử · in thiệp':'tivi · mạng xã hội · in']}[tab];
+  const T0={tpl:inv?['Kiểu thiệp',`${INVT.length} kiểu`]:['Mẫu ảnh',`${TPL.length} mẫu`],photo:['Ảnh',photos.length?`${photos.length} ảnh`:'đang dùng ảnh mẫu'],text:['Nội dung',inv?'gia đình · Thánh lễ · tiệc cưới':'tên thánh · họ tên · thánh lễ'],verse:['Lời Chúa & biểu tượng',inv?'trên thiệp':'của ảnh này'],color:['Phong cách','màu · font'],show:['Kích thước',inv?'thiệp điện tử · in thiệp':'tivi · mạng xã hội · in']}[tab];
   $('#ptitle').textContent=T0[0];$('#psub').textContent=T0[1];
   if(tab==='tpl'){
     const wide=ratio()<1?' wide':'';

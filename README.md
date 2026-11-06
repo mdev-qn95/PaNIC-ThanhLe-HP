@@ -102,22 +102,11 @@ BROWSER=webkit BASE_URL=http://127.0.0.1:8000 node tests/invitations.spec.cjs
 ```
 
 
-### Bộ thiết kế tự do — thiệp và ảnh Thánh lễ
+### Quy tắc trình bày thiệp và ảnh Thánh lễ
 
-Bộ mới ưu tiên ảnh lớn, khoảng thở, tên viết tự nhiên bằng thư pháp và bố cục riêng cho từng mẫu. Các quy tắc cũ về thứ tự, chữ hoa, khung ngày giờ, đầu trang và chân trang không còn áp dụng.
+- Ảnh Thánh lễ: Lời Chúa trên cùng, trích dẫn sát bên dưới, tiếp đến THÁNH LỄ HÔN PHỐI. Ảnh và chữ dùng vùng riêng; mọi chữ có lề an toàn. Thông tin giáo xứ/ngày giờ ở cuối. Số khung ảnh của 15 mẫu không đổi.
+- Thiệp: Lời Chúa → Ông Bà hai bên, cha mẹ và địa chỉ → TRÂN TRỌNG BÁO TIN / **LỄ THÀNH HÔN** / CỦA CON CHÚNG TÔI → đôi tân hôn → Thánh lễ, thánh đường, địa chỉ, thời gian → hôn lễ tư gia → địa điểm và thời gian tiệc cưới. Họ tên cha mẹ viết hoa; tên thánh dùng font nghiêng riêng.
+- Vào Thiệp mời → Nội dung → Tiệc cưới để nhập tên địa điểm, địa chỉ, ngày và giờ riêng. Dữ liệu cũ chưa có mục này sẽ lấy ngày giờ hôn lễ tư gia và địa chỉ nhà trai làm giá trị ban đầu; sau khi nhập riêng, hai sự kiện độc lập.
+- Việc xuống dòng và đặt trích dẫn dùng cùng bộ đo chữ với bộ xuất ảnh, kể cả khi thay font hoặc nhập câu dài.
 
-| Thiệp | Phong cách |
-| --- | --- |
-| Lời hẹn ban mai | Giấy ngà, chữ lớn, dấu & chìm, tên làm trung tâm |
-| Thước phim tình yêu | Ảnh tràn khung, chuyển sáng mềm, tên viết tay |
-| Nét son | Đỏ son, bố cục lệch, tương phản chữ và khoảng trống |
-| Vườn giao ước | Ảnh dọc và tên ở hai nửa trang, xanh botanical |
-| Ánh sáng thánh đường | Chân dung vòm, câu trích bên khung, xanh sương |
-
-Thông tin hai nghi lễ và gia đình được gom thành khối phụ ở phần dưới. Mỗi mẫu sử dụng câu Lời Chúa đang chọn hoặc tự nhập; có thể chọn lại biểu tượng.
-
-15 mẫu ảnh Thánh lễ được dựng lại riêng cho khổ ngang và dọc, gồm ảnh toàn khung, chân dung vòm, hai ảnh, chữ lồng, collage năm ảnh, grid sáu ảnh và lời cảm tạ. Các ID mẫu và số khung ảnh trình chiếu được giữ nguyên để bảo toàn ánh xạ ảnh đã chọn.
-
-Ngày giờ Thánh lễ, ngày giờ hôn lễ tư gia, địa chỉ, tên gia đình và nội dung tùy chỉnh vẫn dùng dữ liệu đang lưu. Không chuyển dữ liệu người dùng thành chữ hoa; kiểu trình bày do từng mẫu quyết định.
-
-Kiểm tra hình học và nội dung: `node tests/content-order.cjs` — 15 bố cục thiệp theo ba khổ xuất và 360 trường hợp slide, gồm câu trích dài và câu tùy chỉnh. Các bài kiểm tra trình duyệt nằm trong `tests/`.
+Kiểm tra nội dung/hình học: `node tests/content-order.cjs` — 45 bố cục thiệp, 360 bố cục slide và trên 6.000 cặp chữ/ảnh. `tests/scripture-placement.spec.cjs` kiểm tra 1.440 bố cục ảnh bằng font thật qua Playwright. Trong lần rà soát này, trang QA cục bộ cũng kiểm tra 1.440 slide và 45 thiệp bằng font đã tải: không phát hiện chữ chồng ảnh hoặc vượt lề.
