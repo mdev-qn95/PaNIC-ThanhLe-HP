@@ -24,7 +24,7 @@ function rng(seed){let s=seed%2147483647||7;return()=>(s=s*16807%2147483647)/214
 const sz=()=>S.mode==='invite'?(ISIZES[S.isize]||ISIZES.share):(SIZES[S.size]||SIZES.tv169);
 const ratio=()=>{const z=sz();return z.h/z.w};
 function pal(base){const p={...(base||PALS[S.pal]||PALS.ivory)};p.soft=mix(p.bg,p.text,.06);p.dark=lum(p.bg)<.4;p.gold1=mix(p.accent,'#ffffff',.45);p.gold2=mix(p.accent,'#000000',.18);return p}
-function texts(){return{...TEXTS,...S.texts}}
+function texts(){return{...TEXTS,...S.texts,homeLunar:S.texts.homeLunar??S.texts.lunar??TEXTS.lunar}}
 function fam(k){const p=FP[S.fp]||FP.classic;switch(k){case'display':return[p.display,p.dw];case'serif':return[p.serif,400];case'script':return[p.script,p.script==='Dancing Script'?500:400];case'times':return['Noto Serif',400];case'sig':return['Ephesis',400];case'pf':return['Playfair Display',400];case'mont':return['Montserrat',500];case'gv':return['Great Vibes',400];case'cg':return['Cormorant Garamond',500];default:return['Montserrat',500]}}
 const slideIndex=sl=>Math.max(0,S.slides.indexOf(sl));
 const photoIndex=(sl,i,n,idx=slideIndex(sl))=>(((sl.id===S.invite.id?0:Math.max(0,idx))*3+i)%n+n)%n;
@@ -115,7 +115,7 @@ function drawText(ctx,e,P){
   const y0=e.valign==='top'?lh/2:-tot/2+lh/2;
   if(e.shadow){ctx.shadowColor=e.shadow===true?'rgba(0,0,0,.45)':e.shadow;ctx.shadowBlur=size*.3}
   ctx.fillStyle=e.color==='gold'?goldStroke(ctx,P,-size*4,-size,size*8,size*2):colorOf(e.color,P);
-  lines.forEach((ln,i)=>{const w=meas(ln);let x=e.align==='center'?-w/2:e.align==='right'?-w:0;const y=y0+i*lh;
+  lines.forEach((ln,i)=>{const w=meas(ln);let x=e.align==='center'?-w/2:e.align==='right'?-w:0;x+=(e.lineShift||0)*(i%2?1:-1);const y=y0+i*lh;
     if(!ls)ctx.fillText(ln,x,y);else for(const ch of ln){ctx.fillText(ch,x,y);x+=ctx.measureText(ch).width+ls}});
   ctx.restore();
 }

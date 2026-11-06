@@ -100,3 +100,13 @@ npx playwright install --with-deps chromium webkit
 BASE_URL=http://127.0.0.1:8000 node tests/uploaded-photos.spec.cjs
 BROWSER=webkit BASE_URL=http://127.0.0.1:8000 node tests/invitations.spec.cjs
 ```
+
+
+### Cập nhật bố cục 06/11/2026
+
+- 5 thiệp dùng cùng thứ tự: Lời Chúa → cha mẹ hai bên → lời báo tin → chú rể → biểu tượng Công giáo → cô dâu → địa điểm, địa chỉ, giờ và ngày Thánh lễ → hôn lễ tại tư gia nam và ngày âm lịch.
+- Giấy ngà và Đỏ vang không dùng ảnh. Trắng hồng, Viền vàng và Vòm ánh sáng dùng ảnh phía trên Lời Chúa.
+- Trong Nội dung, nhập riêng Địa chỉ thánh đường và giờ/ngày/ngày âm lịch của Hôn lễ tại tư gia nam. Ngày Thánh lễ vẫn dùng chung với ảnh trình chiếu; ngày tư gia độc lập.
+- Câu Lời Chúa và các lời dẫn trên thiệp được cố định; biểu tượng có thể chọn trong nhóm Công giáo. Không thay đổi dữ liệu tên, ngày giờ hoặc ảnh đã lưu.
+- Cả 15 mẫu trình chiếu có tiêu đề THÁNH LỄ HÔN PHỐI trên cùng, Lời Chúa bên dưới và giáo xứ/ngày giờ ở cuối. Một số mẫu dùng hai dòng Lời Chúa lệch nhẹ khi nội dung dài.
+- Kiểm tra hợp đồng nội dung và hình học: `node tests/content-order.cjs` (15 bố cục thiệp, 360 trường hợp slide).

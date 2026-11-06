@@ -13,7 +13,7 @@ const{chromium}=require('playwright');const assert=require('node:assert/strict')
    }
   }
   return{count,templates:[...templates]};
- });assert.deepEqual(checks.templates,['verse','covenant']);
+ });assert.equal(checks.templates.length,14);
  if(process.env.OUTPUT_DIR){await fs.mkdir(process.env.OUTPUT_DIR,{recursive:true});for(const tpl of checks.templates)for(const [size,prefix]of [['tv169','land'],['tv916','port']]){
   const bytes=await p.evaluate(async({tpl,size})=>{S.mode='slides';S.cur=0;S.slides[0].tpl=tpl;S.size=size;S.fmt='image/png';const z=await renderBlob(0);return Array.from(new Uint8Array(await z.arrayBuffer()))},{tpl,size});assert.ok(bytes.length>10000);await fs.writeFile(path.join(process.env.OUTPUT_DIR,prefix+'-'+tpl+'.png'),Buffer.from(bytes));
  }}

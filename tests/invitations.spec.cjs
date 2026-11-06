@@ -39,7 +39,7 @@ const output=process.env.OUTPUT_DIR;
     }
     // Check the full set of information remains represented, including long input.
     const checks=await page.evaluate(()=>{
-      const fields=['gs','gn','grank','bs','bn','brank','gfs','gfn','gms','gmn','ga','bfs','bfn','bms','bmn','ba','date','time','lunar','parish','inv1','inv2','inv3'];
+      const fields=['gs','gn','grank','bs','bn','brank','gfs','gfn','gms','gmn','bfs','bfn','bms','bmn','date','time','homeLunar','parish','churchAddress','homeDate','homeTime'];
       const longNames={gn:'Nguyễn Phạm Hoàng Minh Khang',bn:'Trần Nguyễn Lê Thảo Ngọc Vy',gfn:'Nguyễn Phạm Văn Minh An',bfn:'Trần Nguyễn Quốc Minh Bình',parish:'Giáo xứ Thánh Gia — Cộng đoàn An Bình'};
       S.texts={...longNames};let symbols=0;const layouts=[];
       for(const t of INVT){
