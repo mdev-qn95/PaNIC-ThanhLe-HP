@@ -110,3 +110,8 @@ BROWSER=webkit BASE_URL=http://127.0.0.1:8000 node tests/invitations.spec.cjs
 - Câu Lời Chúa và các lời dẫn trên thiệp được cố định; biểu tượng có thể chọn trong nhóm Công giáo. Không thay đổi dữ liệu tên, ngày giờ hoặc ảnh đã lưu.
 - Cả 15 mẫu trình chiếu có tiêu đề THÁNH LỄ HÔN PHỐI trên cùng, Lời Chúa bên dưới và giáo xứ/ngày giờ ở cuối. Một số mẫu dùng hai dòng Lời Chúa lệch nhẹ khi nội dung dài.
 - Kiểm tra hợp đồng nội dung và hình học: `node tests/content-order.cjs` (15 bố cục thiệp, 360 trường hợp slide).
+
+
+### Kiểu chữ và lịch nghi lễ
+
+Nội dung thiệp và slide dùng chữ hoa, ngoại trừ câu Lời Chúa, “Ông Bà”, địa chỉ hai gia đình, vị thứ, địa chỉ thánh đường và ngày âm lịch. Câu Lời Chúa dùng chữ nghiêng; tên đôi tân hôn dùng Dancing Script hoặc Playfair Display nghiêng. “LỄ THÀNH HÔN”, thánh đường và ngày dương lịch Thánh lễ được nhấn đậm; cả cụm ngày giờ hôn lễ tư gia dùng chữ đậm. Hai sự kiện có dải thứ — ngày — giờ riêng, với đường kẻ mảnh. Địa chỉ gia đình có thể nhập trong Nội dung.

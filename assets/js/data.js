@@ -75,8 +75,8 @@ const FIELDS_SLIDE=[
   ['Lời chào & cảm tạ',[['welcome','Lời chào','area'],['wait','Dòng chờ thánh lễ'],['thanks','Tiêu đề cảm tạ'],['thanks2','Lời cảm tạ','area']]],
 ];
 const FIELDS_INV=[
-  ['Nhà trai',[['gfs','Tên thánh ông'],['gfn','Họ tên ông'],['gms','Tên thánh bà'],['gmn','Họ tên bà'],]],
-  ['Nhà gái',[['bfs','Tên thánh ông'],['bfn','Họ tên ông'],['bms','Tên thánh bà'],['bmn','Họ tên bà'],]],
+  ['Nhà trai',[['gfs','Tên thánh ông'],['gfn','Họ tên ông'],['gms','Tên thánh bà'],['gmn','Họ tên bà'],['ga','Địa chỉ nhà trai'],]],
+  ['Nhà gái',[['bfs','Tên thánh ông'],['bfn','Họ tên ông'],['bms','Tên thánh bà'],['bmn','Họ tên bà'],['ba','Địa chỉ nhà gái'],]],
   ['Chú rể & cô dâu',[['gs','Tên thánh chú rể'],['gn','Họ tên chú rể'],['grank','Thứ bậc (Trưởng Nam, Thứ Nam…)'],['bs','Tên thánh cô dâu'],['bn','Họ tên cô dâu'],['brank','Thứ bậc (Trưởng Nữ, Út Nữ…)']]],
   ['Thánh lễ',[['date','Ngày (thứ tự động tính)'],['time','Giờ'],['parish','Giáo xứ'],['churchAddress','Địa chỉ thánh đường']]],
   ['Hôn lễ tại tư gia nam',[['homeTime','Giờ hôn lễ'],['homeDate','Ngày hôn lễ (thứ tự động tính)'],['homeLunar','Ngày âm lịch của hôn lễ']]],
