@@ -106,6 +106,7 @@ function drawText(ctx,e,P){
   const meas=t=>ctx.measureText(t).width+(e.ls||0)*size*Math.max(0,[...t].length-1);
   let lines=e.maxW?wrap(s,e.maxW,meas):s.split('\n');
   if(e.fit){const mw=Math.max(...lines.map(meas));if(mw>e.fit){size*=e.fit/mw;setF();if(e.maxW)lines=wrap(s,e.maxW,meas)}}
+  if(e.maxH){for(let i=0;i<4&&lines.length*size*(e.lh||1.2)>e.maxH;i++){size*=e.maxH/(lines.length*size*(e.lh||1.2));setF();lines=e.maxW?wrap(s,e.maxW,meas):s.split('\n')}}
   if(e.maxLines&&lines.length>e.maxLines){lines=lines.slice(0,e.maxLines);lines[lines.length-1]=lines[lines.length-1].replace(/[\s,.;—-]*$/,'')+'…'}
   const ls=(e.ls||0)*size,lh=size*(e.lh||1.2),tot=lines.length*lh;
   ctx.save();ctx.translate(e.x,e.y);if(e.rot)ctx.rotate(e.rot);ctx.globalAlpha=e.alpha??1;ctx.textBaseline='middle';ctx.textAlign='left';
@@ -172,6 +173,25 @@ function drawSymbol(ctx,kind,x,y,s,col,P){
       ctx.beginPath();ctx.moveTo(-s*.42,s*.44);ctx.lineTo(s*.42,s*.44);ctx.stroke();break}
     case'hearts':{const lw=s*.028;ctx.lineWidth=lw;heartPath(-s*.13,s*.1,s*.62);ctx.stroke();heartPath(s*.13,s*.1,s*.62);ctx.stroke();
       soft(()=>heartPath(-s*.13,s*.1,s*.62),.08);thinCross(0,-s*.36,s*.3,s*.035);break}
+    case'church':{
+      ctx.lineWidth=s*.025;thinCross(0,-s*.37,s*.22,s*.025);
+      ctx.beginPath();ctx.moveTo(-s*.34,s*.44);ctx.lineTo(-s*.34,-s*.04);ctx.lineTo(0,-s*.3);ctx.lineTo(s*.34,-s*.04);ctx.lineTo(s*.34,s*.44);ctx.closePath();ctx.stroke();
+      ctx.beginPath();ctx.moveTo(-s*.12,s*.44);ctx.lineTo(-s*.12,s*.15);ctx.arc(0,s*.15,s*.12,Math.PI,0);ctx.lineTo(s*.12,s*.44);ctx.stroke();
+      ctx.beginPath();ctx.arc(0,-s*.03,s*.075,0,Math.PI*2);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(-s*.44,s*.47);ctx.lineTo(s*.44,s*.47);ctx.stroke();break}
+    case'rosary':{
+      ctx.lineWidth=s*.014;const r=s*.29,cy=-s*.13;
+      ctx.beginPath();ctx.arc(0,cy,r,0,Math.PI*2);ctx.stroke();
+      for(let i=0;i<12;i++){const a=i*Math.PI/6;ctx.beginPath();ctx.arc(Math.cos(a)*r,cy+Math.sin(a)*r,s*.033,0,Math.PI*2);ctx.fill()}
+      ctx.beginPath();ctx.moveTo(0,cy+r);ctx.lineTo(0,s*.3);ctx.stroke();
+      ctx.beginPath();ctx.arc(0,s*.23,s*.027,0,Math.PI*2);ctx.fill();thinCross(0,s*.4,s*.24,s*.026);break}
+    case'trinity':{
+      ctx.lineWidth=s*.035;const r=s*.225;
+      for(const [cx,cy]of [[0,-s*.17],[-s*.19,s*.15],[s*.19,s*.15]]){ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.stroke()}
+      thinCross(0,s*.035,s*.2,s*.02);break}
+    case'shield':{
+      ctx.lineWidth=s*.024;ctx.beginPath();ctx.moveTo(0,-s*.46);ctx.quadraticCurveTo(s*.15,-s*.36,s*.35,-s*.34);ctx.lineTo(s*.32,s*.08);ctx.quadraticCurveTo(s*.25,s*.34,0,s*.49);ctx.quadraticCurveTo(-s*.25,s*.34,-s*.32,s*.08);ctx.lineTo(-s*.35,-s*.34);ctx.quadraticCurveTo(-s*.15,-s*.36,0,-s*.46);ctx.closePath();ctx.stroke();
+      thinCross(0,-s*.01,s*.54,s*.035);break}
     case'bible':{ctx.strokeStyle=g;rays(0,-s*.12,s*.3,s*.42,9,s*.016,-Math.PI*.95,-Math.PI*.05);thinCross(0,-s*.14,s*.48,s*.038);book(0,s*.12,s*.86,s*.02);break}
   }
   ctx.restore();

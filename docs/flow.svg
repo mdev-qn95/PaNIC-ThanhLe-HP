@@ -10,7 +10,7 @@
   <rect x="460" y="60" width="360" height="150" rx="22" fill="none" stroke="#c23b55" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.08;0.3;0.38;1" dur="3.6s" begin="1.2s" repeatCount="indefinite"/></rect>
   <circle cx="512" cy="112" r="24" fill="url(#rose)"/><text x="512" y="119" text-anchor="middle" font-family="Georgia,serif" font-size="21" fill="#fff">2</text>
   <text x="552" y="110" font-family="Georgia,serif" font-size="22" fill="#3a1f27">Chọn mẫu, ảnh &amp; Lời Chúa</text>
-  <text x="552" y="138" font-family="'Segoe UI',Helvetica,Arial,sans-serif" font-size="15" fill="#97818a">15 mẫu ảnh · 3 kiểu thiệp mời</text>
+  <text x="552" y="138" font-family="'Segoe UI',Helvetica,Arial,sans-serif" font-size="15" fill="#97818a">15 mẫu ảnh · 5 kiểu thiệp mời</text>
   <rect x="488" y="166" width="304" height="6" rx="3" fill="#fbe3e8"/>
   <rect x="488" y="166" width="0" height="6" rx="3" fill="url(#rose)"><animate attributeName="width" values="0;304;304;0" keyTimes="0;0.3;0.95;1" dur="3.6s" begin="1.2s" repeatCount="indefinite"/></rect></g><g><rect x="860" y="60" width="360" height="150" rx="22" fill="#fff" stroke="#f3d3da"/>
   <rect x="860" y="60" width="360" height="150" rx="22" fill="none" stroke="#c23b55" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.08;0.3;0.38;1" dur="3.6s" begin="2.4s" repeatCount="indefinite"/></rect>

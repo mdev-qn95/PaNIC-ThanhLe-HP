@@ -51,17 +51,17 @@ const VERSES=[
 ];
 
 /* ===== Biểu tượng đức tin ===== */
-const SYMBOLS={crossring:'Thánh giá & đôi nhẫn',chalice:'Chén Thánh',wreath:'Thánh giá & cành ô-liu',dove:'Chúa Thánh Thần',unity:'Nến hiệp nhất',hearts:'Hai trái tim & Thánh giá',bible:'Lời Chúa',none:'Không dùng'};
+const SYMBOLS={crossring:'Thánh giá & đôi nhẫn',chalice:'Chén Thánh',wreath:'Thánh giá & cành ô-liu',dove:'Chúa Thánh Thần',unity:'Nến hiệp nhất',hearts:'Hai trái tim & Thánh giá',bible:'Lời Chúa',church:'Thánh đường',rosary:'Chuỗi Mân Côi',trinity:'Ba vòng hiệp nhất',shield:'Khiên đức tin',none:'Không dùng'};
 
-/* ===== Nội dung mẫu ===== */
+/* ===== Nội dung minh hoạ hư cấu — không dùng thông tin của gia đình thật ===== */
 const TEXTS={
   title:'Thánh Lễ Hôn Phối',
-  gs:'Phaolô Lộc',gn:'Thái Văn Phú',grank:'Thứ Nam',
-  bs:'Anna',bn:'Nguyễn Thị Thu Thanh',brank:'Út Nữ',
-  gfs:'Phaolô',gfn:'Thái Văn Dũng',gms:'Isave',gmn:'Nguyễn Thị Chiến',ga:'Thái Cẩm, Điện Bàn Bắc - TP Đà Nẵng',
-  bfs:'Giacôbê',bfn:'Nguyễn Văn Nga',bms:'Maria',bmn:'Phạm Thị Huyền',ba:'Hoà Lâm, Duy Xuyên - TP Đà Nẵng',
-  date:'12 · 06 · 2024',time:'18:00',lunar:'Nhằm ngày 07 tháng 05 năm Giáp Thìn',
-  parish:'Giáo xứ Cẩm Sơn',
+  gs:'Giuse',gn:'Nguyễn Minh Khang',grank:'Trưởng Nam',
+  bs:'Maria',bn:'Trần Thảo Vy',brank:'Trưởng Nữ',
+  gfs:'Phêrô',gfn:'Nguyễn Văn An',gms:'Anna',gmn:'Lê Ngọc Mai',ga:'Địa chỉ nhà trai - Tỉnh/Thành phố',
+  bfs:'Gioan',bfn:'Trần Quốc Bình',bms:'Têrêsa',bmn:'Phạm Hoài Lan',ba:'Địa chỉ nhà gái - Tỉnh/Thành phố',
+  date:'20 · 12 · 2026',time:'09:00',lunar:'Nhằm ngày … tháng … năm …',
+  parish:'Giáo xứ An Bình',
   welcome:'Kính chào quý Cha, quý Tu sĩ, quý quan khách và cộng đoàn',
   wait:'Thánh lễ sẽ bắt đầu lúc',
   thanks:'Tạ ơn Chúa',

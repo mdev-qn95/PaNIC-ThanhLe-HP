@@ -162,7 +162,7 @@ function renderPanel(){
     const sws=Object.entries(PALS).map(([k,v])=>`<button class="sw${k===S.pal?' on':''}" data-p="${k}"><i style="background:${v.bg};--t:${v.text};--a:${v.accent}"></i>${v.n}</button>`).join('');
     P.innerHTML=peek?`<div class="hstrip sws">${sws}<button class="more" data-full>Font &<br>tuỳ chọn ›</button></div>`
      :`<div class="sec"><label>Bảng màu</label><div class="swgrid">${sws}</div></div>
-       <div class="sec"><label>Bộ font</label><div class="chips">${Object.entries(FP).map(([k,v])=>`<button class="fp${k===S.fp?' on':''}" data-f="${k}"><span class="s1" style="font-family:'${v.display}';font-weight:${v.dw}">Văn Phú</span><span class="s2" style="font-family:'${v.script}'">Thu Thanh</span><small>${v.n}</small></button>`).join('')}</div></div>
+       <div class="sec"><label>Bộ font</label><div class="chips">${Object.entries(FP).map(([k,v])=>`<button class="fp${k===S.fp?' on':''}" data-f="${k}"><span class="s1" style="font-family:'${v.display}';font-weight:${v.dw}">Minh Khang</span><span class="s2" style="font-family:'${v.script}'">Thảo Vy</span><small>${v.n}</small></button>`).join('')}</div></div>
        <div class="sec"><label>Bố cục</label><div class="range"><span>Khoảng cách ảnh</span><input type="range" data-r="gap" min="0" max="40" step="1" value="${S.gap}"><em>${S.gap}</em></div>
        <div class="range"><span>Bo góc ảnh</span><input type="range" data-r="radius" min="0" max="40" step="1" value="${S.radius}"><em>${S.radius}</em></div></div>
        <button class="bigbtn alt" data-reset>↺ Khôi phục cài đặt mặc định</button>`;
@@ -231,8 +231,12 @@ $('#btnPlay').onclick=()=>playStart(S.cur);
 /* ===== Xuất ảnh ===== */
 function exportDims(){const z=sz();let w,h;if(z.u==='cm'){w=z.w/2.54*S.dpi;h=z.h/2.54*S.dpi}else{w=z.w;h=z.h}
   const cap=isIOS?16e6:64e6;let k=1;if(w*h>cap)k=Math.sqrt(cap/(w*h));k=Math.min(k,16000/Math.max(w,h));return{w:Math.round(w*k),h:Math.round(h*k)}}
-async function renderBlob(i){await document.fonts.ready;const d=exportDims(),c=document.createElement('canvas');c.width=d.w;c.height=d.h;render(c.getContext('2d'),d.w,d.h,i<0?{slide:S.invite,idx:0}:{slide:S.slides[i],idx:i});
-  const b=await new Promise(r=>c.toBlob(r,S.fmt,.93));c.width=c.height=1;return b}
+async function renderBlob(i){
+  await document.fonts.ready;const d=exportDims(),c=document.createElement('canvas');c.width=d.w;c.height=d.h;
+  try{render(c.getContext('2d'),d.w,d.h,i<0?{slide:S.invite,idx:0}:{slide:S.slides[i],idx:i});
+    const b=await new Promise(r=>c.toBlob(r,S.fmt,.93));if(!b)throw new Error('Không tạo được tệp ảnh');return b;
+  }finally{c.width=c.height=1}
+}
 const fname=i=>i<0?`ThiepMoi-HonPhoi.${S.fmt==='image/png'?'png':'jpg'}`:`HonPhoi-${String(i+1).padStart(2,'0')}-${S.slides[i].tpl}.${S.fmt==='image/png'?'png':'jpg'}`;
 function exportMenu(){const d=exportDims(),n=S.slides.length;if(S.mode==='invite')return exportOne();
   $('#mbox').innerHTML=`<h3>Xuất ảnh</h3><p>${sz().n} · ${d.w} × ${d.h} px</p>
@@ -249,8 +253,9 @@ async function exportOne(){$('#busytxt').textContent='Đang xuất ảnh…';$('
   try{const ix=S.mode==='invite'?-1:S.cur,b=await renderBlob(ix);freeUrls();const u=URL.createObjectURL(b);urls.push(u);const file=new File([b],fname(ix),{type:S.fmt}),share=!!(navigator.canShare&&navigator.canShare({files:[file]}));
     $('#mbox').innerHTML=`<h3>${ix<0?'Thiệp mời':'Ảnh'} đã sẵn sàng ✦</h3><p>${exportDims().w} × ${exportDims().h} px · ${(b.size/1048576).toFixed(1)} MB</p><div class="mprev"><img src="${u}" alt=""></div>
       ${share?'<button class="bigbtn" id="shr">Lưu vào Ảnh / Chia sẻ</button>':''}<a class="bigbtn ${share?'alt':''}" href="${u}" download="${fname(ix)}">Tải file về máy</a><button class="bigbtn ghost" id="cls">Đóng</button>`;
+    $('#modal').classList.add('show');
     if(share)$('#shr').onclick=()=>navigator.share({files:[file]}).catch(()=>{});$('#cls').onclick=()=>$('#modal').classList.remove('show')}
-  catch(e){toast('Không xuất được ảnh — thử lại nhé')}$('#busy').classList.remove('show')}
+  catch(e){console.error('Xuất ảnh thất bại:',e);toast('Không xuất được ảnh — thử lại nhé')}finally{$('#busy').classList.remove('show')}}
 function loadZip(){return window.JSZip?Promise.resolve():new Promise((res,rej)=>{const s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';s.onload=res;s.onerror=rej;document.head.appendChild(s)})}
 async function exportAll(){const n=S.slides.length;
   $('#mbox').innerHTML=`<h3>Đang xuất ${n} ảnh…</h3><p id="xp">0 / ${n}</p><div class="prog"><i id="xbar"></i></div>`;
