@@ -5,7 +5,7 @@ let uid=1;const newId=()=>'s'+Date.now().toString(36)+(uid++);
 const DEFAULT_DECK=[['waiting',0,'crossring'],['welcome',0,'crossring'],['couple',1,'hearts'],['verse',0,'dove'],['panel',3,'crossring'],
   ['collage',8,'wreath'],['frame',0,'crossring'],['duo',1,'chalice'],['grid',7,'crossring'],['thanks',0,'unity']];
 function deck(){return DEFAULT_DECK.map(([tpl,v,sym])=>({id:newId(),tpl,v,sym,vt:'',vr:''}))}
-const DEF={mode:'slides',isize:'share',invite:{id:'invite',tpl:'inv_cream',v:0,sym:'crossring',vt:'',vr:''},size:'tv169',pal:'ivory',fp:'classic',gap:12,radius:0,tscale:1,demo:true,mock:false,dur:8,fx:'fade',kb:true,fmt:'image/jpeg',dpi:150,texts:{},cur:0,seen:false};
+const DEF={invitePurpose:'mass',mode:'slides',isize:'share',invite:{id:'invite',tpl:'inv_cream',v:0,sym:'crossring',vt:'',vr:''},size:'tv169',pal:'ivory',fp:'classic',gap:12,radius:0,tscale:1,demo:true,mock:false,dur:8,fx:'fade',kb:true,fmt:'image/jpeg',dpi:150,texts:{},cur:0,seen:false};
 let S=JSON.parse(JSON.stringify(DEF));S.slides=deck();
 try{const o=JSON.parse(localStorage.getItem(STORE)||'null');if(o){S={...S,...o,texts:{...(o.texts||{})}};if(!Array.isArray(S.slides)||!S.slides.length)S.slides=deck()}}catch(e){}
 const save=()=>{try{localStorage.setItem(STORE,JSON.stringify(S))}catch(e){}};
@@ -25,6 +25,12 @@ const sz=()=>S.mode==='invite'?(ISIZES[S.isize]||ISIZES.share):(SIZES[S.size]||S
 const ratio=()=>{const z=sz();return z.h/z.w};
 function pal(base){const p={...(base||PALS[S.pal]||PALS.ivory)};p.soft=mix(p.bg,p.text,.06);p.dark=lum(p.bg)<.4;p.gold1=mix(p.accent,'#ffffff',.45);p.gold2=mix(p.accent,'#000000',.18);return p}
 function texts(){return{...TEXTS,...S.texts}}
+function invitePurpose(){return INV_PURPOSES[S.invitePurpose]||INV_PURPOSES.mass}
+function invitationTexts(){return{...texts(),inv2:invitePurpose().title+' của con chúng tôi'}}
+function invitationEvents(f){const mass={id:'mass',title:'Thánh Lễ Hôn Phối',date:f.date,time:f.time,venue:f.parish,address:f.massAddress,lunar:f.lunar};
+ const wedding={id:'wedding',title:'Lễ Thành Hôn',date:f.weddingDate,time:f.weddingTime,venue:f.weddingVenue,address:f.weddingAddress,lunar:f.weddingLunar};
+ return S.invitePurpose==='both'?[mass,wedding]:S.invitePurpose==='wedding'?[wedding]:[mass]}
+
 function fam(k){const p=FP[S.fp]||FP.classic;switch(k){case'display':return[p.display,p.dw];case'serif':return[p.serif,400];case'script':return[p.script,p.script==='Dancing Script'?500:400];case'times':return['Noto Serif',400];case'sig':return['Ephesis',400];case'pf':return['Playfair Display',400];case'mont':return['Montserrat',500];case'gv':return['Great Vibes',400];case'cg':return['Cormorant Garamond',500];default:return['Montserrat',500]}}
 const slideIndex=sl=>Math.max(0,S.slides.indexOf(sl));
 const photoIndex=(sl,i,n,idx=slideIndex(sl))=>(((sl.id===S.invite.id?0:Math.max(0,idx))*3+i)%n+n)%n;
@@ -254,8 +260,22 @@ function stack(e,x,y0,y1,items,maxW,align='center',kmax=1.7,anchor='center'){
 
 /* ===== Dựng & render một slide ===== */
 const tplById=id=>TPL.find(t=>t.id===id)||INVT.find(t=>t.id===id)||TPL[0];
-function layout(W,H,sl){const tpl=tplById(sl.tpl),land=W>H*1.05,m=Math.min(W,H)*.06,g=S.gap,f=texts(),v=verseOf(sl);
-  return tpl.b({W,H,m,g,f,v,land,sym:SYMBOLS[sl.sym]?sl.sym:'crossring',P:pal(tpl.pal)})}
+function layout(W,H,sl){const tpl=tplById(sl.tpl),land=W>H*1.05,m=Math.min(W,H)*.06,g=S.gap,inv=INVT.some(t=>t.id===sl.tpl),f=inv?invitationTexts():texts(),v=verseOf(sl),P=pal(tpl.pal);
+ const els=tpl.b({W,H,m,g,f,v,land,sym:SYMBOLS[sl.sym]?sl.sym:'crossring',P});
+ if(inv)return els;
+ const out=[];for(const raw of els){const e={...raw};
+  if(e.t==='img'){
+   delete e.frame2;if(e.frame)e.frame*=.25;if(e.ring)e.ring=Math.min(e.ring,1.2);out.push(e);
+   if(!e.shape){const d=Math.min(e.w,e.h)*.12;
+    if(e.x>1)out.push({t:'fade',x:e.x,y:e.y,w:d,h:e.h,dir:'left'});
+    if(e.x+e.w<W-1)out.push({t:'fade',x:e.x+e.w-d,y:e.y,w:d,h:e.h,dir:'right'});
+    if(e.y>1)out.push({t:'fade',x:e.x,y:e.y,w:e.w,h:d,dir:'up'});
+    if(e.y+e.h<H-1)out.push({t:'fade',x:e.x,y:e.y+e.h-d,w:e.w,h:d,dir:'down'});
+   }
+  }else if(e.t==='rframe'||e.t==='frame'){e.color=mix(P.bg,P.accent,.2);e.lw=Math.min(e.lw||1,1);e.alpha=.35;out.push(e)}else out.push(e);
+ }
+ return out;
+}
 function render(ctx,pxW,pxH,o={}){
   const sl=o.slide||curSlide(),idx=o.idx??slideIndex(sl),W=1000,H=1000*pxH/pxW,sc=pxW/W*(o.dpr||1),T0=tplById(sl.tpl),P=pal(T0.pal);
   ctx.setTransform(sc,0,0,sc,0,0);ctx.fillStyle=P.bg;ctx.fillRect(0,0,W,H);

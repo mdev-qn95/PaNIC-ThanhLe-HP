@@ -368,3 +368,10 @@ header .iconbtn{color:#7a4050}
 @media (max-width:360px){.cta.play span{display:none}}
 nav.tabs{grid-template-columns:repeat(var(--tc,6),1fr)}
 @media (min-width:900px){nav.tabs{grid-template-columns:1fr}}
+
+.invite-purpose{border:0;padding:0;margin:0 0 14px;min-width:0}
+.invite-purpose legend{font-size:12px;color:var(--muted);margin-bottom:8px}
+.invite-purpose>div{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.invite-purpose button{min-height:46px;padding:7px 5px;border:1px solid #efd8de;border-radius:12px;background:#fff8fa;color:#7a5560;font-size:12px;line-height:1.4}
+.invite-purpose button[aria-pressed="true"]{background:#b8324a;color:white;border-color:#b8324a;box-shadow:0 4px 10px #b8324a25}
+@media(max-width:899px){.field input,.field textarea{font-size:16px}}

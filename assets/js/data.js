@@ -61,12 +61,13 @@ const TEXTS={
   gfs:'Phêrô',gfn:'Nguyễn Văn An',gms:'Anna',gmn:'Lê Ngọc Mai',ga:'Địa chỉ nhà trai - Tỉnh/Thành phố',
   bfs:'Gioan',bfn:'Trần Quốc Bình',bms:'Têrêsa',bmn:'Phạm Hoài Lan',ba:'Địa chỉ nhà gái - Tỉnh/Thành phố',
   date:'20 · 12 · 2026',time:'09:00',lunar:'Nhằm ngày … tháng … năm …',
-  parish:'Giáo xứ An Bình',
+  parish:'Giáo xứ An Bình',massAddress:'',
+  weddingDate:'20 · 12 · 2026',weddingTime:'17:00',weddingVenue:'Nhà hàng Hạnh Phúc',weddingAddress:'Địa chỉ nơi tổ chức Lễ Thành Hôn',weddingLunar:'',
   welcome:'Kính chào quý Cha, quý Tu sĩ, quý quan khách và cộng đoàn',
   wait:'Thánh lễ sẽ bắt đầu lúc',
   thanks:'Tạ ơn Chúa',
   thanks2:'Chân thành cảm ơn quý Cha, quý Tu sĩ, ca đoàn, quý quan khách và cộng đoàn đã hiệp dâng thánh lễ cùng chúng con.',
-  inv1:'Trân trọng báo tin',inv2:'Lễ thành hôn của con chúng tôi',inv3:'Thánh lễ hôn phối được cử hành tại',
+  inv1:'Trân trọng báo tin',inv2:'Thánh Lễ Hôn Phối của con chúng tôi',inv3:'Thánh lễ hôn phối được cử hành tại',
 };
 const FIELDS_SLIDE=[
   ['Đôi tân hôn',[['gs','Tên thánh (người nam)'],['gn','Họ tên đầy đủ'],['bs','Tên thánh (người nữ)'],['bn','Họ tên đầy đủ']]],
@@ -80,3 +81,11 @@ const FIELDS_INV=[
   ['Thánh lễ',[['date','Ngày (thứ tự động tính)'],['time','Giờ'],['lunar','Ngày âm lịch'],['parish','Giáo xứ']]],
   ['Lời báo tin',[['inv1','Dòng 1'],['inv2','Dòng 2'],['inv3','Dòng mời dự lễ']]],
 ];
+
+/* Hai lịch độc lập; ngày/giờ cũ luôn là lịch Thánh Lễ, không chuyển sang lịch Thành Hôn. */
+const INV_PURPOSES={mass:{label:'Thánh Lễ Hôn Phối',title:'Thánh Lễ Hôn Phối'},wedding:{label:'Lễ Thành Hôn',title:'Lễ Thành Hôn'},both:{label:'Cả hai',title:'Thánh Lễ Hôn Phối & Lễ Thành Hôn'}};
+const INV_EVENT_FIELDS={
+ mass:['Thánh Lễ Hôn Phối',[['date','Ngày cử hành Thánh Lễ'],['time','Giờ cử hành Thánh Lễ'],['parish','Thánh đường / Giáo xứ'],['massAddress','Địa chỉ Thánh đường'],['lunar','Ngày âm lịch của Thánh Lễ']]],
+ wedding:['Lễ Thành Hôn',[['weddingDate','Ngày tổ chức Lễ Thành Hôn'],['weddingTime','Giờ tổ chức Lễ Thành Hôn'],['weddingVenue','Địa điểm Lễ Thành Hôn'],['weddingAddress','Địa chỉ nơi tổ chức'],['weddingLunar','Ngày âm lịch của Lễ Thành Hôn']]]
+};
+function invitationFields(){const purpose=INV_PURPOSES[S.invitePurpose]?S.invitePurpose:'mass';return[...FIELDS_INV.slice(0,3),...(purpose==='both'?[INV_EVENT_FIELDS.mass,INV_EVENT_FIELDS.wedding]:[INV_EVENT_FIELDS[purpose]]),['Lời báo tin',[['inv1','Lời báo tin / kính mời']]]]}

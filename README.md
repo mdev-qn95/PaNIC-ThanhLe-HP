@@ -41,9 +41,11 @@ Tự sắp lại bố cục cho **tivi ngang 16:9 & 4K, tivi dọc 9:16, máy ch
 
 ## Thiệp mời tham dự thánh lễ
 
-<img src="docs/invites.webp" alt="Năm kiểu thiệp mời tham dự thánh lễ hôn phối" width="100%">
+<img src="docs/invites.webp" alt="Năm kiểu thiệp, ba mục đích: Thánh Lễ Hôn Phối, Lễ Thành Hôn hoặc cả hai" width="100%">
 
-Nhập tên cha mẹ hai bên một lần — thiệp mời được dựng sẵn theo đúng lối thiệp Công giáo: **Nhà trai · Nhà gái**, *Trân trọng báo tin lễ thành hôn*, tên thánh và họ tên đôi tân hôn kèm thứ bậc (*Thứ Nam, Út Nữ…*), thánh đường, giờ lễ, **thứ trong tuần tự tính** và ngày âm lịch. Năm kiểu với bố cục, đường nét và font riêng:
+Chọn mục đích thiệp: **Thánh Lễ Hôn Phối**, **Lễ Thành Hôn**, hoặc **cả hai**. Mỗi sự kiện có ngày, giờ, địa điểm, địa chỉ và ngày âm lịch riêng; đổi mục đích vẫn giữ nội dung đã nhập. Thiệp mời cả hai hiển thị hai khối lịch có nhãn riêng, không dùng ngày giờ Thánh Lễ cho Lễ Thành Hôn. Các mẫu ảnh có Lời Chúa, “Tạ ơn Chúa” và lời cảm tạ đặt nội dung phía trên hoặc bên cạnh ảnh đôi tân hôn; mép ảnh chuyển nhẹ vào nền.
+
+Nhập tên cha mẹ hai bên, tên thánh và họ tên đôi tân hôn kèm thứ bậc (*Trưởng Nam, Út Nữ…*). Năm kiểu với bố cục, đường nét và font riêng:
 
 - **Giấy ngà thanh lịch** — không dùng ảnh, chữ serif tinh tế, dấu ấn đức tin và hai khối thông tin gia đình cân đối
 - **Trắng hồng hiện đại** — ảnh cưới lớn trên đầu, dải ngày tháng kẻ chỉ, chữ không chân kết hợp chữ bay
@@ -99,4 +101,11 @@ Kiểm tra ảnh tải lên trên Chromium và WebKit (giao diện điện tho�
 npx playwright install --with-deps chromium webkit
 BASE_URL=http://127.0.0.1:8000 node tests/uploaded-photos.spec.cjs
 BROWSER=webkit BASE_URL=http://127.0.0.1:8000 node tests/invitations.spec.cjs
+```
+
+Kiểm tra ba mục đích thiệp và vị trí nội dung thánh:
+
+```sh
+BASE_URL=http://127.0.0.1:8000 node tests/invitation-purposes.spec.cjs
+BASE_URL=http://127.0.0.1:8000 node tests/scripture-placement.spec.cjs
 ```
