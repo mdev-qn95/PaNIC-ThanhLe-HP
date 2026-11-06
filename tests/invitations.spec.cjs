@@ -7,7 +7,7 @@ const path=require('node:path');
 const base=process.env.BASE_URL||'http://127.0.0.1:8000';
 const output=process.env.OUTPUT_DIR;
 (async()=>{
-  const browser=await (process.env.BROWSER==='webkit'?webkit:chromium).launch({headless:true,...(process.env.BROWSER_PATH?{executablePath:process.env.BROWSER_PATH}:{})});
+  const browser=await (process.env.BROWSER==='webkit'?webkit:chromium).launch({headless:true});
   const errors=[];
   try{
     const context=await browser.newContext({viewport:{width:390,height:844},deviceScaleFactor:2,isMobile:true,hasTouch:true,acceptDownloads:true});
@@ -39,7 +39,7 @@ const output=process.env.OUTPUT_DIR;
     }
     // Check the full set of information remains represented, including long input.
     const checks=await page.evaluate(()=>{
-      const fields=['gs','gn','grank','bs','bn','brank','gfs','gfn','gms','gmn','ga','bfs','bfn','bms','bmn','ba','date','time','lunar','parish','inv1','inv2'];
+      const fields=['gs','gn','grank','bs','bn','brank','gfs','gfn','gms','gmn','ga','bfs','bfn','bms','bmn','ba','date','time','lunar','parish','inv1','inv2','inv3'];
       const longNames={gn:'Nguyễn Phạm Hoàng Minh Khang',bn:'Trần Nguyễn Lê Thảo Ngọc Vy',gfn:'Nguyễn Phạm Văn Minh An',bfn:'Trần Nguyễn Quốc Minh Bình',parish:'Giáo xứ Thánh Gia — Cộng đoàn An Bình'};
       S.texts={...longNames};let symbols=0;const layouts=[];
       for(const t of INVT){

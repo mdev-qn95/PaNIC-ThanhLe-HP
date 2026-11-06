@@ -146,7 +146,7 @@ function renderPanel(){
   }
   else if(tab==='text'){
     const f=texts();
-    P.innerHTML=(inv?invitationFields():FIELDS_SLIDE).map(([g,list])=>`<div class="lbl2">${g}</div>`+list.map(([k,l,t])=>t==='area'?`<label class="field"><span>${l}</span><textarea data-k="${k}" rows="2">${esc(f[k])}</textarea></label>`:`<label class="field"><span>${l}</span><input data-k="${k}" value="${esc(f[k])}" enterkeyhint="done"></label>`).join('')).join('')+
+    P.innerHTML=(inv?FIELDS_INV:FIELDS_SLIDE).map(([g,list])=>`<div class="lbl2">${g}</div>`+list.map(([k,l,t])=>t==='area'?`<label class="field"><span>${l}</span><textarea data-k="${k}" rows="2">${esc(f[k])}</textarea></label>`:`<label class="field"><span>${l}</span><input data-k="${k}" value="${esc(f[k])}" enterkeyhint="done"></label>`).join('')).join('')+
       `<div class="range" style="margin-top:8px"><span>Cỡ chữ</span><input type="range" id="ts" min=".75" max="1.3" step=".01" value="${S.tscale}"><em id="tsv">${Math.round(S.tscale*100)}%</em></div>`;
     P.querySelectorAll('[data-k]').forEach(el=>{el.oninput=()=>{S.texts[el.dataset.k]=el.value;save();draw()};if(el.tagName==='INPUT')el.onkeydown=e=>{if(e.key==='Enter')el.blur()}});
     $('#ts').oninput=ev=>{S.tscale=+ev.target.value;$('#tsv').textContent=Math.round(S.tscale*100)+'%';save();draw()};
@@ -186,10 +186,6 @@ function renderPanel(){
       P.querySelectorAll('[data-fx]').forEach(b=>b.onclick=()=>{S.fx=b.dataset.fx;save();P.querySelectorAll('[data-fx]').forEach(x=>x.classList.toggle('on',x===b))});
       $('#kb').onclick=()=>{S.kb=!S.kb;save();$('#kb').classList.toggle('on',S.kb)}}
     P.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{S[key]=b.dataset.s;save();P.querySelectorAll('[data-s]').forEach(x=>x.classList.toggle('on',x===b));$('#strip').innerHTML='';fitStage();renderStrip()});
-  }
-  if(inv&&(tab==='tpl'||tab==='text')){
-    P.insertAdjacentHTML('afterbegin',`<fieldset class="invite-purpose"><legend>Mục đích thiệp</legend><div>${Object.entries(INV_PURPOSES).map(([k,v])=>`<button type="button" data-purpose="${k}" aria-pressed="${(S.invitePurpose||'mass')===k}">${v.label}</button>`).join('')}</div></fieldset>`);
-    P.querySelectorAll('[data-purpose]').forEach(b=>b.onclick=()=>{S.invitePurpose=b.dataset.purpose;save();setMode(sheet.dataset.mode,true);draw();});
   }
   P.querySelectorAll('[data-full]').forEach(b=>b.onclick=()=>setMode('full'));
   P.querySelectorAll('[data-reset]').forEach(b=>b.onclick=askReset);
