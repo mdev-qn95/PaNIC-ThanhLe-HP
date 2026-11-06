@@ -117,7 +117,7 @@ const gEnd=()=>{if(!gd)return;sheet.classList.remove('drag');const h=sheet.getBo
   if(!gd.moved)setMode(cur==='full'&&PEEK[tab]?'peek':'full',true);else{const pk=PEEK[tab]?220:0,fl=innerHeight*.6;setMode(h<(pk||fl)*.5?'closed':pk&&h<(pk+fl)/2?'peek':'full',true)}gd=null};
 grip.addEventListener('pointerup',gEnd);grip.addEventListener('pointercancel',gEnd);
 
-function symIcon(c,kind){const x=c.getContext('2d'),d=2;c.width=58*d;c.height=58*d;x.scale(d,d);if(kind==='none'){x.strokeStyle='#e3b7c1';x.lineWidth=2;x.beginPath();x.moveTo(18,18);x.lineTo(40,40);x.stroke();return}drawSymbol(x,kind,29,29,40,'gold',pal(tplById(curSlide().tpl).pal||{bg:'#fff',text:'#2e1a21',accent:'#b8324a'}))}
+function symIcon(c,kind){const x=c.getContext('2d'),d=2;c.width=58*d;c.height=58*d;x.scale(d,d);if(kind==='none'){x.strokeStyle='#e3b7c1';x.lineWidth=2;x.beginPath();x.moveTo(18,18);x.lineTo(40,40);x.stroke();return}drawSymbol(x,kind,29,29,REF_SYMBOLS[kind]?48:40,'gold',pal(tplById(curSlide().tpl).pal||{bg:'#fff',text:'#2e1a21',accent:'#b8324a'}))}
 function renderPanel(){
   const P=$('#panel'),peek=mob()&&sheet.dataset.mode==='peek',sl=curSlide();
   const inv=S.mode==='invite',LT=inv?INVT:TPL;

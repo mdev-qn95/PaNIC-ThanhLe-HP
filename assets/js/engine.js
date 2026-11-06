@@ -126,6 +126,7 @@ function drawSymbol(ctx,kind,x,y,s,col,P){
   ctx.save();ctx.translate(x,y);
   const g=col==='white'?'#ffffff':goldStroke(ctx,P,-s/2,-s/2,s,s);ctx.fillStyle=g;ctx.strokeStyle=g;ctx.lineCap='round';ctx.lineJoin='round';
   if(col==='white'){ctx.shadowColor='rgba(0,0,0,.35)';ctx.shadowBlur=s*.12}
+  if(typeof drawReferenceSymbol==='function'&&drawReferenceSymbol(ctx,kind,0,0,s*.96,g)){ctx.restore();return}
   const cross=(cx,cy,h)=>{const w=h*.13;ctx.beginPath();rr(ctx,cx-w/2,cy-h/2,w,h,w*.3);ctx.fill();ctx.beginPath();rr(ctx,cx-h*.33,cy-h/2+h*.26,h*.66,w,w*.3);ctx.fill()};
   const thinCross=(cx,cy,h,w)=>{w=w||h*.06;ctx.beginPath();rr(ctx,cx-w/2,cy-h/2,w,h,w*.4);ctx.fill();ctx.beginPath();rr(ctx,cx-h*.24,cy-h/2+h*.2,h*.48,w,w*.4);ctx.fill()};
   const ringPair=(cx,cy,r,lw,diamond)=>{ctx.lineWidth=lw;ctx.beginPath();ctx.arc(cx-r*.55,cy,r,0,7);ctx.stroke();ctx.beginPath();ctx.arc(cx+r*.55,cy,r,0,7);ctx.stroke();

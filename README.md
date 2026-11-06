@@ -100,3 +100,17 @@ npx playwright install --with-deps chromium webkit
 BASE_URL=http://127.0.0.1:8000 node tests/uploaded-photos.spec.cjs
 BROWSER=webkit BASE_URL=http://127.0.0.1:8000 node tests/invitations.spec.cjs
 ```
+
+
+### Bộ biểu tượng Công giáo bổ sung
+
+Trong Lời Chúa & biểu tượng, bốn lựa chọn đầu tiên được dựng lại từ ảnh tham chiếu:
+
+- Nến hoa & đôi tay — Thánh giá trong vòng tròn, nến, hoa, đôi tay và sách.
+- Kinh Thánh & cành lá — Kinh Thánh mở, nến, cành lá và hào quang.
+- Nến & chuông cưới — Kinh Thánh, đôi nến và chuông cưới.
+- Nến hoa ly & đôi tay — Thánh giá, đôi tay, đôi nến và hoa ly.
+
+Ảnh tham chiếu: https://thiepcuoisieure.com/wp-content/uploads/2024/01/HINH-thien-chua-scaled.jpg
+
+Các biểu tượng có nền trong suốt, được tô theo màu của mẫu, hỗ trợ bản trắng trên ảnh tối và xuất PNG/JPG. Nét Bezier được nạp đồng bộ bằng Path2D; không phụ thuộc tải ảnh bên ngoài khi xuất file. Bản SVG độc lập nằm trong `assets/symbols/`; dữ liệu dựng canvas nằm trong `assets/js/symbols.js`. Toàn bộ giao diện, bố cục và bộ biểu tượng cũ của bản đã khôi phục được giữ lại.
