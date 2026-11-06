@@ -61,8 +61,7 @@ const TEXTS={
   gfs:'Phêrô',gfn:'Nguyễn Văn An',gms:'Anna',gmn:'Lê Ngọc Mai',ga:'Địa chỉ nhà trai - Tỉnh/Thành phố',
   bfs:'Gioan',bfn:'Trần Quốc Bình',bms:'Têrêsa',bmn:'Phạm Hoài Lan',ba:'Địa chỉ nhà gái - Tỉnh/Thành phố',
   date:'20 · 12 · 2026',time:'09:00',lunar:'Nhằm ngày … tháng … năm …',
-  parish:'Giáo xứ An Bình',churchAddress:'Địa chỉ thánh đường',
-  homeTime:'10:00',homeDate:'21 · 12 · 2026',receptionVenue:'Tư gia nhà trai',
+  parish:'Giáo xứ An Bình',
   welcome:'Kính chào quý Cha, quý Tu sĩ, quý quan khách và cộng đoàn',
   wait:'Thánh lễ sẽ bắt đầu lúc',
   thanks:'Tạ ơn Chúa',
@@ -71,14 +70,13 @@ const TEXTS={
 };
 const FIELDS_SLIDE=[
   ['Đôi tân hôn',[['gs','Tên thánh (người nam)'],['gn','Họ tên đầy đủ'],['bs','Tên thánh (người nữ)'],['bn','Họ tên đầy đủ']]],
-  ['Thánh lễ',[['date','Ngày cử hành'],['time','Giờ'],['parish','Giáo xứ']]],
+  ['Thánh lễ',[['title','Tiêu đề'],['date','Ngày cử hành'],['time','Giờ'],['parish','Giáo xứ']]],
   ['Lời chào & cảm tạ',[['welcome','Lời chào','area'],['wait','Dòng chờ thánh lễ'],['thanks','Tiêu đề cảm tạ'],['thanks2','Lời cảm tạ','area']]],
 ];
 const FIELDS_INV=[
-  ['Nhà trai',[['gfs','Tên thánh ông'],['gfn','Họ tên ông'],['gms','Tên thánh bà'],['gmn','Họ tên bà'],['ga','Địa chỉ nhà trai'],]],
-  ['Nhà gái',[['bfs','Tên thánh ông'],['bfn','Họ tên ông'],['bms','Tên thánh bà'],['bmn','Họ tên bà'],['ba','Địa chỉ nhà gái'],]],
+  ['Nhà trai',[['gfs','Tên thánh ông'],['gfn','Họ tên ông'],['gms','Tên thánh bà'],['gmn','Họ tên bà'],['ga','Địa chỉ (phần sau dấu “-” xuống dòng)']]],
+  ['Nhà gái',[['bfs','Tên thánh ông'],['bfn','Họ tên ông'],['bms','Tên thánh bà'],['bmn','Họ tên bà'],['ba','Địa chỉ (phần sau dấu “-” xuống dòng)']]],
   ['Chú rể & cô dâu',[['gs','Tên thánh chú rể'],['gn','Họ tên chú rể'],['grank','Thứ bậc (Trưởng Nam, Thứ Nam…)'],['bs','Tên thánh cô dâu'],['bn','Họ tên cô dâu'],['brank','Thứ bậc (Trưởng Nữ, Út Nữ…)']]],
-  ['Thánh lễ',[['date','Ngày (thứ tự động tính)'],['time','Giờ'],['parish','Giáo xứ'],['churchAddress','Địa chỉ thánh đường']]],
-  ['Hôn lễ tại tư gia nam',[['homeTime','Giờ hôn lễ'],['homeDate','Ngày hôn lễ (thứ tự động tính)'],['homeLunar','Ngày âm lịch của hôn lễ']]],
-  ['Tiệc cưới',[['receptionVenue','Tên địa điểm tiệc cưới'],['receptionAddress','Địa chỉ tiệc cưới'],['receptionDate','Ngày tiệc cưới (thứ tự động tính)'],['receptionTime','Giờ tiệc cưới']]],
+  ['Thánh lễ',[['date','Ngày (thứ tự động tính)'],['time','Giờ'],['lunar','Ngày âm lịch'],['parish','Giáo xứ']]],
+  ['Lời báo tin',[['inv1','Dòng 1'],['inv2','Dòng 2'],['inv3','Dòng mời dự lễ']]],
 ];

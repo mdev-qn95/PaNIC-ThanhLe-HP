@@ -121,7 +121,7 @@ function symIcon(c,kind){const x=c.getContext('2d'),d=2;c.width=58*d;c.height=58
 function renderPanel(){
   const P=$('#panel'),peek=mob()&&sheet.dataset.mode==='peek',sl=curSlide();
   const inv=S.mode==='invite',LT=inv?INVT:TPL;
-  const T0={tpl:inv?['Kiểu thiệp',`${INVT.length} kiểu`]:['Mẫu ảnh',`${TPL.length} mẫu`],photo:['Ảnh',photos.length?`${photos.length} ảnh`:'đang dùng ảnh mẫu'],text:['Nội dung',inv?'gia đình · Thánh lễ · tiệc cưới':'tên thánh · họ tên · thánh lễ'],verse:['Lời Chúa & biểu tượng',inv?'trên thiệp':'của ảnh này'],color:['Phong cách','màu · font'],show:['Kích thước',inv?'thiệp điện tử · in thiệp':'tivi · mạng xã hội · in']}[tab];
+  const T0={tpl:inv?['Kiểu thiệp',`${INVT.length} kiểu`]:['Mẫu ảnh',`${TPL.length} mẫu`],photo:['Ảnh',photos.length?`${photos.length} ảnh`:'đang dùng ảnh mẫu'],text:['Nội dung',inv?'cha mẹ hai bên · thánh lễ':'tên thánh · họ tên · thánh lễ'],verse:['Lời Chúa & biểu tượng',inv?'trên thiệp':'của ảnh này'],color:['Phong cách','màu · font'],show:['Kích thước',inv?'thiệp điện tử · in thiệp':'tivi · mạng xã hội · in']}[tab];
   $('#ptitle').textContent=T0[0];$('#psub').textContent=T0[1];
   if(tab==='tpl'){
     const wide=ratio()<1?' wide':'';
@@ -291,7 +291,7 @@ $('#brand').onclick=()=>{$('#mbox').innerHTML=`<h3>PaNIC Thánh Lễ Hôn Phối
   $('#bp').onclick=()=>{$('#modal').classList.remove('show');playStart(0)};$('#bc').onclick=()=>$('#modal').classList.remove('show');$('#mbox').querySelector('[data-reset]').onclick=askReset};
 let tT=0;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>t.classList.remove('show'),2200)}
 function hideHint(){$('#hint').classList.remove('show')}
-const FL=['400 40px "Cormorant Garamond"','500 40px "Cormorant Garamond"','italic 400 40px "Cormorant Garamond"','300 40px "Noto Serif Display"','italic 300 40px "Noto Serif Display"','400 40px "Playfair Display"','700 40px "Playfair Display"','italic 400 40px "Playfair Display"',
+const FL=['400 40px "Cormorant Garamond"','500 40px "Cormorant Garamond"','italic 400 40px "Cormorant Garamond"','300 40px "Noto Serif Display"','400 40px "Playfair Display"','italic 400 40px "Playfair Display"',
   '400 40px "Great Vibes"','500 40px "Dancing Script"','300 40px "Montserrat"','500 40px "Montserrat"','400 40px "Lora"','italic 400 40px "Lora"','500 40px "Be Vietnam Pro"','400 40px "Noto Serif"','700 40px "Noto Serif"','italic 400 40px "Noto Serif"','400 40px "Ephesis"'];
 Promise.allSettled(FL.map(f=>document.fonts.load(f,'AaĐđẤấỡễ&“”'))).then(()=>{draw();renderStrip();if(tab==='tpl')thumbs()});
 if(document.fonts.addEventListener)document.fonts.addEventListener('loadingdone',()=>{draw();renderStrip()});

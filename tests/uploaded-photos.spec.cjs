@@ -15,7 +15,7 @@ const fs=require('node:fs/promises');
     await page.evaluate(()=>{photos=[];SLOTS={}});
     await page.locator('#file').setInputFiles(Array.from({length:count},(_,i)=>({name:'photo-'+i+'.png',mimeType:'image/png',buffer:Buffer.from(photo,'base64')})));
     await page.waitForFunction(n=>photos.length===n,count);
-    for(const id of ['inv_rose','inv_arch','inv_wine']){
+    for(const id of ['inv_rose','inv_gold','inv_arch']){
      await page.locator('.tcard[data-id="'+id+'"]').click();
      const ok=await page.evaluate(()=>{draw(true);const x=cv.getContext('2d'),a=x.getImageData(0,0,cv.width,cv.height).data;let n=0;for(let i=0;i<a.length;i+=4)if((a[i]<15&&a[i+1]>190&&a[i+2]>130)||(a[i]>200&&a[i+1]<15&&a[i+2]>80))n++;return n>1000});
      assert.ok(ok,`${name} ${id} ${count} uploaded photos missing`);

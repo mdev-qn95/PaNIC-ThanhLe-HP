@@ -100,13 +100,3 @@ npx playwright install --with-deps chromium webkit
 BASE_URL=http://127.0.0.1:8000 node tests/uploaded-photos.spec.cjs
 BROWSER=webkit BASE_URL=http://127.0.0.1:8000 node tests/invitations.spec.cjs
 ```
-
-
-### Quy tắc trình bày thiệp và ảnh Thánh lễ
-
-- Ảnh Thánh lễ: Lời Chúa trên cùng, trích dẫn sát bên dưới, tiếp đến THÁNH LỄ HÔN PHỐI. Ảnh và chữ dùng vùng riêng; mọi chữ có lề an toàn. Thông tin giáo xứ/ngày giờ ở cuối. Số khung ảnh của 15 mẫu không đổi.
-- Thiệp: Lời Chúa → Ông Bà hai bên, cha mẹ và địa chỉ → TRÂN TRỌNG BÁO TIN / **LỄ THÀNH HÔN** / CỦA CON CHÚNG TÔI → đôi tân hôn → Thánh lễ, thánh đường, địa chỉ, thời gian → hôn lễ tư gia → địa điểm và thời gian tiệc cưới. Họ tên cha mẹ viết hoa; tên thánh dùng font nghiêng riêng.
-- Vào Thiệp mời → Nội dung → Tiệc cưới để nhập tên địa điểm, địa chỉ, ngày và giờ riêng. Dữ liệu cũ chưa có mục này sẽ lấy ngày giờ hôn lễ tư gia và địa chỉ nhà trai làm giá trị ban đầu; sau khi nhập riêng, hai sự kiện độc lập.
-- Việc xuống dòng và đặt trích dẫn dùng cùng bộ đo chữ với bộ xuất ảnh, kể cả khi thay font hoặc nhập câu dài.
-
-Kiểm tra nội dung/hình học: `node tests/content-order.cjs` — 45 bố cục thiệp, 360 bố cục slide và trên 6.000 cặp chữ/ảnh. `tests/scripture-placement.spec.cjs` kiểm tra 1.440 bố cục ảnh bằng font thật qua Playwright. Trong lần rà soát này, trang QA cục bộ cũng kiểm tra 1.440 slide và 45 thiệp bằng font đã tải: không phát hiện chữ chồng ảnh hoặc vượt lề.

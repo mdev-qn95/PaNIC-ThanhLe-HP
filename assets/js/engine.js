@@ -24,8 +24,8 @@ function rng(seed){let s=seed%2147483647||7;return()=>(s=s*16807%2147483647)/214
 const sz=()=>S.mode==='invite'?(ISIZES[S.isize]||ISIZES.share):(SIZES[S.size]||SIZES.tv169);
 const ratio=()=>{const z=sz();return z.h/z.w};
 function pal(base){const p={...(base||PALS[S.pal]||PALS.ivory)};p.soft=mix(p.bg,p.text,.06);p.dark=lum(p.bg)<.4;p.gold1=mix(p.accent,'#ffffff',.45);p.gold2=mix(p.accent,'#000000',.18);return p}
-function texts(){return{...TEXTS,...S.texts,homeLunar:S.texts.homeLunar??S.texts.lunar??TEXTS.lunar,receptionDate:S.texts.receptionDate??S.texts.homeDate??TEXTS.homeDate,receptionTime:S.texts.receptionTime??S.texts.homeTime??TEXTS.homeTime,receptionAddress:S.texts.receptionAddress??S.texts.ga??TEXTS.ga}}
-function fam(k){const p=FP[S.fp]||FP.classic;switch(k){case'display':return[p.display,p.dw];case'serif':return[p.serif,400];case'script':return[p.script,p.script==='Dancing Script'?500:400];case'times':return['Noto Serif',400];case'sig':return['Ephesis',400];case'pf':return['Playfair Display',400];case'mont':return['Montserrat',500];case'nd':return['Noto Serif Display',300];case'ds':return['Dancing Script',500];case'gv':return['Great Vibes',400];case'cg':return['Cormorant Garamond',500];default:return['Montserrat',500]}}
+function texts(){return{...TEXTS,...S.texts}}
+function fam(k){const p=FP[S.fp]||FP.classic;switch(k){case'display':return[p.display,p.dw];case'serif':return[p.serif,400];case'script':return[p.script,p.script==='Dancing Script'?500:400];case'times':return['Noto Serif',400];case'sig':return['Ephesis',400];case'pf':return['Playfair Display',400];case'mont':return['Montserrat',500];case'gv':return['Great Vibes',400];case'cg':return['Cormorant Garamond',500];default:return['Montserrat',500]}}
 const slideIndex=sl=>Math.max(0,S.slides.indexOf(sl));
 const photoIndex=(sl,i,n,idx=slideIndex(sl))=>(((sl.id===S.invite.id?0:Math.max(0,idx))*3+i)%n+n)%n;
 const curSlide=()=>S.mode==='invite'?S.invite:S.slides[clamp(S.cur,0,S.slides.length-1)];
@@ -101,47 +101,21 @@ function drawSlot(ctx,e,i,P,o){
 
 function wrap(s,maxW,meas){const out=[];s.split('\n').forEach(par=>{const ws=par.split(/\s+/);let cur='';ws.forEach(w=>{const t=cur?cur+' '+w:w;if(meas(t)>maxW&&cur){out.push(cur);cur=w}else cur=t});out.push(cur)});return out}
 function colorOf(c,P){return c==='accent'?P.accent:c==='bg'?P.bg:c==='soft'?P.soft:c&&c[0]==='#'?c:P.text}
-const TEXT_MEASURE=document.createElement('canvas').getContext('2d');
-// Layout and painting share exactly the same font fitting and wrapping rules.
-function measureTextBlock(e,ctx=TEXT_MEASURE){
-  let s=String(e.text??'').normalize('NFC');if(e.upper)s=s.toLocaleUpperCase('vi');
+function drawText(ctx,e,P){
+  let s=e.text;if(s==null||s==='')return;s=String(s).normalize('NFC');if(e.upper)s=s.toLocaleUpperCase('vi');
   const[family,w0]=fam(e.font);let size=e.size*(e.noScale?1:S.tscale);
-  ctx.textBaseline='middle';
   const setF=()=>ctx.font=`${e.italic?'italic ':''}${e.weight||w0} ${size}px "${family}"`;setF();
   const meas=t=>ctx.measureText(t).width+(e.ls||0)*size*Math.max(0,[...t].length-1);
   let lines=e.maxW?wrap(s,e.maxW,meas):s.split('\n');
   if(e.fit){const mw=Math.max(...lines.map(meas));if(mw>e.fit){size*=e.fit/mw;setF();if(e.maxW)lines=wrap(s,e.maxW,meas)}}
-  if(e.maxH){for(let i=0;i<6&&lines.length*size*(e.lh||1.2)>e.maxH;i++){size*=e.maxH/(lines.length*size*(e.lh||1.2));setF();lines=e.maxW?wrap(s,e.maxW,meas):s.split('\n')}}
+  if(e.maxH){for(let i=0;i<4&&lines.length*size*(e.lh||1.2)>e.maxH;i++){size*=e.maxH/(lines.length*size*(e.lh||1.2));setF();lines=e.maxW?wrap(s,e.maxW,meas):s.split('\n')}}
   if(e.maxLines&&lines.length>e.maxLines){lines=lines.slice(0,e.maxLines);lines[lines.length-1]=lines[lines.length-1].replace(/[\s,.;—-]*$/,'')+'…'}
   const ls=(e.ls||0)*size,lh=size*(e.lh||1.2),tot=lines.length*lh;
-  return{lines,size,ls,lh,tot,meas,width:Math.max(0,...lines.map(meas)),font:ctx.font};
-}
-function textBox(e){
-  const m=measureTextBlock(e),w=m.width+Math.abs(e.lineShift||0)*2,h=m.tot;
-  const x=e.x-(e.align==='left'?0:e.align==='right'?w:w/2),y=e.y-(e.valign==='top'?0:h/2);
-  const y0=e.valign==='top'?m.lh/2:-m.tot/2+m.lh/2;
-  let left=x,top=y,right=x+w,bottom=y+h;
-  for(let i=0;i<m.lines.length;i++){
-    const ln=m.lines[i],advance=m.meas(ln),mt=TEXT_MEASURE.measureText(ln);
-    if(Number.isFinite(mt.actualBoundingBoxAscent)){
-      const xx=e.x-(e.align==='left'?0:e.align==='right'?advance:advance/2)+(e.lineShift||0)*(i%2?1:-1),yy=e.y+y0+i*m.lh;
-      left=Math.min(left,xx-mt.actualBoundingBoxLeft);right=Math.max(right,xx+mt.actualBoundingBoxRight+(m.ls?m.ls*[...ln].length:0));
-      top=Math.min(top,yy-mt.actualBoundingBoxAscent);bottom=Math.max(bottom,yy+mt.actualBoundingBoxDescent);
-    }
-  }
-  if(!e.rot)return{x:left,y:top,w:right-left,h:bottom-top};
-  const points=[[left,top],[right,top],[left,bottom],[right,bottom]].map(([a,b])=>({x:e.x+(a-e.x)*Math.cos(e.rot)-(b-e.y)*Math.sin(e.rot),y:e.y+(a-e.x)*Math.sin(e.rot)+(b-e.y)*Math.cos(e.rot)}));
-  const rx=Math.min(...points.map(p=>p.x)),ry=Math.min(...points.map(p=>p.y));
-  return{x:rx,y:ry,w:Math.max(...points.map(p=>p.x))-rx,h:Math.max(...points.map(p=>p.y))-ry};
-}
-function drawText(ctx,e,P){
-  if(e.text==null||e.text==='')return;
-  const{lines,size,ls,lh,tot,meas}=measureTextBlock(e,ctx);
   ctx.save();ctx.translate(e.x,e.y);if(e.rot)ctx.rotate(e.rot);ctx.globalAlpha=e.alpha??1;ctx.textBaseline='middle';ctx.textAlign='left';
   const y0=e.valign==='top'?lh/2:-tot/2+lh/2;
   if(e.shadow){ctx.shadowColor=e.shadow===true?'rgba(0,0,0,.45)':e.shadow;ctx.shadowBlur=size*.3}
   ctx.fillStyle=e.color==='gold'?goldStroke(ctx,P,-size*4,-size,size*8,size*2):colorOf(e.color,P);
-  lines.forEach((ln,i)=>{const w=meas(ln);let x=e.align==='center'?-w/2:e.align==='right'?-w:0;x+=(e.lineShift||0)*(i%2?1:-1);const y=y0+i*lh;
+  lines.forEach((ln,i)=>{const w=meas(ln);let x=e.align==='center'?-w/2:e.align==='right'?-w:0;const y=y0+i*lh;
     if(!ls)ctx.fillText(ln,x,y);else for(const ch of ln){ctx.fillText(ch,x,y);x+=ctx.measureText(ch).width+ls}});
   ctx.restore();
 }
@@ -238,17 +212,6 @@ function drawRich(ctx,e,P){const segs=e.segs.map(g=>({...g,text:String(g.text||'
 function drawDecor(ctx,e,P,W,H){
   ctx.save();
   switch(e.t){
-    case'archline':{
-      shapePath(ctx,e.x,e.y,e.w,e.h,'arch',0);ctx.strokeStyle=colorOf(e.color,P);ctx.lineWidth=e.lw||1;ctx.globalAlpha=e.alpha??.7;ctx.stroke();break;
-    }
-    case'botanical':{
-      ctx.translate(e.x,e.y);ctx.scale(e.flip||1,1);ctx.globalAlpha=e.alpha??.25;
-      ctx.strokeStyle=colorOf(e.color,P);ctx.fillStyle=colorOf(e.color,P);ctx.lineWidth=e.s*.004;
-      ctx.beginPath();ctx.moveTo(0,e.s*.5);ctx.bezierCurveTo(e.s*.28,e.s*.1,-e.s*.08,-e.s*.22,e.s*.12,-e.s*.5);ctx.stroke();
-      for(let j=0;j<9;j++){const p=j/8,yy=e.s*(.44-p*.88),xx=Math.sin(p*Math.PI)*e.s*.10;
-        for(const sign of [-1,1]){ctx.save();ctx.translate(xx,yy);ctx.rotate(sign*.7);ctx.beginPath();ctx.ellipse(sign*e.s*.045,-e.s*.026,e.s*.045,e.s*.016,0,0,Math.PI*2);ctx.fill();ctx.restore();}}
-      break;
-    }
     case'rich':drawRich(ctx,e,P);break;
     case'rframe':{ctx.strokeStyle=colorOf(e.color,P);ctx.lineWidth=e.lw||2;ctx.globalAlpha=e.alpha??1;ctx.beginPath();rr(ctx,e.x,e.y,e.w,e.h,e.r||0);ctx.stroke();break}
     case'blob':{const gr=ctx.createRadialGradient(e.x,e.y,0,e.x,e.y,e.r);gr.addColorStop(0,rgba(e.color,e.alpha||.5));gr.addColorStop(1,rgba(e.color,0));ctx.fillStyle=gr;ctx.fillRect(e.x-e.r,e.y-e.r,e.r*2,e.r*2);break}

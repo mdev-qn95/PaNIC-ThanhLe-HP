@@ -39,7 +39,7 @@ const output=process.env.OUTPUT_DIR;
     }
     // Check the full set of information remains represented, including long input.
     const checks=await page.evaluate(()=>{
-      const fields=['gs','gn','grank','bs','bn','brank','gfs','gfn','gms','gmn','bfs','bfn','bms','bmn','date','time','homeLunar','parish','churchAddress','homeDate','homeTime','receptionVenue','receptionAddress','receptionDate','receptionTime'];
+      const fields=['gs','gn','grank','bs','bn','brank','gfs','gfn','gms','gmn','ga','bfs','bfn','bms','bmn','ba','date','time','lunar','parish','inv1','inv2','inv3'];
       const longNames={gn:'Nguyễn Phạm Hoàng Minh Khang',bn:'Trần Nguyễn Lê Thảo Ngọc Vy',gfn:'Nguyễn Phạm Văn Minh An',bfn:'Trần Nguyễn Quốc Minh Bình',parish:'Giáo xứ Thánh Gia — Cộng đoàn An Bình'};
       S.texts={...longNames};let symbols=0;const layouts=[];
       for(const t of INVT){
@@ -49,7 +49,7 @@ const output=process.env.OUTPUT_DIR;
         const els=layout(1000,1414,{...S.invite,tpl:t.id});
         const text=els.filter(e=>e.t==='text'||e.t==='rich');
         if(!text.every(e=>Number.isFinite(e.x)&&Number.isFinite(e.y)))throw Error('Invalid text position');
-        if(['inv_cream','inv_gold'].includes(t.id)&&els.some(e=>e.t==='img'))throw Error('Photo in photo-free card');
+        if(['inv_cream','inv_wine'].includes(t.id)&&els.some(e=>e.t==='img'))throw Error('Photo in photo-free card');
         if(t.id==='inv_arch'&&!els.some(e=>e.t==='img'))throw Error('Missing photo in arch card');
         for(const key of Object.keys(SYMBOLS)){
           const c=document.createElement('canvas');c.width=280;c.height=280;drawSymbol(c.getContext('2d'),key,140,140,200,'gold',pal(t.pal));symbols++;
