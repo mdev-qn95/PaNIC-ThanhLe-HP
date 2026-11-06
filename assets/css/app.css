@@ -260,7 +260,7 @@ header .slotbar #sbRep{padding:0 11px 0 9px}
 @media (min-width:900px){header .slotbar{max-width:460px;margin:0 auto}}
 header .slotbar,header .slotbar.show{position:static;left:auto;bottom:auto;transform:none}
 
-/* ===== PaNIC Hôn Phối ===== */
+/* ===== PaNIC Thánh Lễ Hôn Phối ===== */
 :root{--gold:#c23b55;--gold2:#f2aebb}
 .cta.play{background:linear-gradient(135deg,#ef8a9d,#c23b55);color:#2e1a21}
 .cta.ghost{background:var(--ink);color:#fff3f5}

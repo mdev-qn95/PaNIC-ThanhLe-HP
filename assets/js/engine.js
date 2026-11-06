@@ -26,6 +26,8 @@ const ratio=()=>{const z=sz();return z.h/z.w};
 function pal(base){const p={...(base||PALS[S.pal]||PALS.ivory)};p.soft=mix(p.bg,p.text,.06);p.dark=lum(p.bg)<.4;p.gold1=mix(p.accent,'#ffffff',.45);p.gold2=mix(p.accent,'#000000',.18);return p}
 function texts(){return{...TEXTS,...S.texts}}
 function fam(k){const p=FP[S.fp]||FP.classic;switch(k){case'display':return[p.display,p.dw];case'serif':return[p.serif,400];case'script':return[p.script,p.script==='Dancing Script'?500:400];case'times':return['Noto Serif',400];case'sig':return['Ephesis',400];case'pf':return['Playfair Display',400];case'mont':return['Montserrat',500];case'gv':return['Great Vibes',400];case'cg':return['Cormorant Garamond',500];default:return['Montserrat',500]}}
+const slideIndex=sl=>Math.max(0,S.slides.indexOf(sl));
+const photoIndex=(sl,i,n,idx=slideIndex(sl))=>(((sl.id===S.invite.id?0:Math.max(0,idx))*3+i)%n+n)%n;
 const curSlide=()=>S.mode==='invite'?S.invite:S.slides[clamp(S.cur,0,S.slides.length-1)];
 function verseOf(sl){if(sl.v===-1)return{t:sl.vt||'',r:sl.vr||''};return VERSES[sl.v]||VERSES[0]}
 
@@ -66,8 +68,8 @@ function makeDemo(c,k,rnd){
 function slotsOf(sl){return SLOTS[sl.id]||(SLOTS[sl.id]={})}
 function srcFor(sl,i,idx){const st=slotsOf(sl)[i];
   if(st&&st.pid){const ph=photos.find(q=>q.id===st.pid);if(ph)return ph.src}
-  if(photos.length)return photos[(idx*3+i)%photos.length].src;
-  if(S.demo){const d=demos();return d[(idx*3+i)%d.length]}return null}
+  if(photos.length)return photos[photoIndex(sl,i,photos.length,idx)].src;
+  if(S.demo){const d=demos();return d[photoIndex(sl,i,d.length,idx)]}return null}
 
 /* ===== Vẽ ===== */
 function rr(ctx,x,y,w,h,r){r=Math.min(r,w/2,h/2);ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
@@ -255,7 +257,7 @@ const tplById=id=>TPL.find(t=>t.id===id)||INVT.find(t=>t.id===id)||TPL[0];
 function layout(W,H,sl){const tpl=tplById(sl.tpl),land=W>H*1.05,m=Math.min(W,H)*.06,g=S.gap,f=texts(),v=verseOf(sl);
   return tpl.b({W,H,m,g,f,v,land,sym:SYMBOLS[sl.sym]?sl.sym:'crossring',P:pal(tpl.pal)})}
 function render(ctx,pxW,pxH,o={}){
-  const sl=o.slide||curSlide(),idx=o.idx??S.slides.indexOf(sl),W=1000,H=1000*pxH/pxW,sc=pxW/W*(o.dpr||1),T0=tplById(sl.tpl),P=pal(T0.pal);
+  const sl=o.slide||curSlide(),idx=o.idx??slideIndex(sl),W=1000,H=1000*pxH/pxW,sc=pxW/W*(o.dpr||1),T0=tplById(sl.tpl),P=pal(T0.pal);
   ctx.setTransform(sc,0,0,sc,0,0);ctx.fillStyle=P.bg;ctx.fillRect(0,0,W,H);
   const els=layout(W,H,sl);let si=0;const slots=[];
   for(const e of els){if(e.t==='img'){drawSlot(ctx,e,si,P,{...o,sc,slide:sl,idx});slots.push({...e,_i:si});si++}

@@ -1,13 +1,13 @@
 // Run with Playwright installed: node tests/invitations.spec.cjs
 // BASE_URL points to a local static server. OUTPUT_DIR is outside the source tree.
-const {chromium}=require('playwright');
+const {chromium,webkit}=require('playwright');
 const assert=require('node:assert/strict');
 const fs=require('node:fs/promises');
 const path=require('node:path');
 const base=process.env.BASE_URL||'http://127.0.0.1:8000';
 const output=process.env.OUTPUT_DIR;
 (async()=>{
-  const browser=await chromium.launch({headless:true});
+  const browser=await (process.env.BROWSER==='webkit'?webkit:chromium).launch({headless:true});
   const errors=[];
   try{
     const context=await browser.newContext({viewport:{width:390,height:844},deviceScaleFactor:2,isMobile:true,hasTouch:true,acceptDownloads:true});

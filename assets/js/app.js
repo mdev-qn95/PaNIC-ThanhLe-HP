@@ -28,7 +28,7 @@ cv.addEventListener('pointermove',ev=>{if(!ptrs.has(ev.pointerId))return;ptrs.se
   if(pinch&&ptrs.size===2){const[a,b]=[...ptrs.values()],d=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);ens(sel).z=clamp(pinch.z*d/pinch.d,1,4);draw();return}
   if(!drag||drag.h==null)return;const pt=toD(ev);if(!drag.moved&&Math.hypot(pt.x-drag.start.x,pt.y-drag.start.y)<8)return;
   drag.moved=true;if(drag.idx!==sel)return;
-  const e=lastSlots[drag.h],src=srcFor(curSlide(),drag.idx,S.cur);if(!e||!src)return;const st=ens(drag.idx);
+  const e=lastSlots[drag.h],src=srcFor(curSlide(),drag.idx,slideIndex(curSlide()));if(!e||!src)return;const st=ens(drag.idx);
   let dx=pt.x-drag.last.x,dy=pt.y-drag.last.y;const G=coverGeom(e,src,st);if(G.ex>.5)st.ox=clamp(st.ox+2*dx/G.ex,-1,1);if(G.ey>.5)st.oy=clamp(st.oy+2*dy/G.ey,-1,1);drag.last=pt;draw()});
 const endP=ev=>{if(!ptrs.has(ev.pointerId))return;ptrs.delete(ev.pointerId);if(ptrs.size<2)pinch=null;
   if(drag&&!drag.moved&&ptrs.size===0){if(drag.idx==null)sel=null;else{sel=drag.idx;if(!photos.length&&!S.demo){uploadTarget=sel;$('#file').click()}}hideHint();draw();if(tab==='photo')renderPanel()}
@@ -126,7 +126,7 @@ function renderPanel(){
     const on=P.querySelector('.tcard.on');if(peek&&on)on.scrollIntoView({inline:'center',block:'nearest'});thumbs();
   }
   else if(tab==='photo'){
-    const st=sel!=null?ens(sel):null,cur=sel!=null?(st.pid||(photos.length?photos[(S.cur*3+sel)%photos.length].id:null)):null;
+    const st=sel!=null?ens(sel):null,cur=sel!=null?(st.pid||(photos.length?photos[photoIndex(curSlide(),sel,photos.length)].id:null)):null;
     const lib=photos.map(q=>`<div class="ph${q.id===cur?' pick':''}" data-id="${q.id}"><img src="${q.thumb}" alt=""><button class="x" data-del="${q.id}" aria-label="Xoá">×</button></div>`).join('');
     P.innerHTML=peek?`<div class="hstrip phs"><button class="addph" id="upAll"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><span>Thêm ảnh</span></button>${lib}
         <div class="pnote">${sel!=null?(photos.length?'Chạm một ảnh để đặt vào khung đang chọn':'Thêm ảnh để thay vào khung đang chọn'):(photos.length?'Ảnh tự xếp vào các slide · chạm khung để chọn':'Chọn nhiều ảnh cưới — tự xếp vào tất cả slide')}</div></div>`
@@ -281,7 +281,7 @@ $('#szbtn').onclick=()=>openTab('show');
 function setAppMode(m){if(S.mode===m)return;S.mode=m;sel=null;save();document.querySelectorAll('.modesw button').forEach(b=>b.classList.toggle('on',b.dataset.m===m));
   buildTabs();$('#strip').innerHTML='';fitStage();renderStrip();openTab(tab)}
 document.querySelectorAll('.modesw button').forEach(b=>{b.classList.toggle('on',b.dataset.m===S.mode);b.onclick=()=>setAppMode(b.dataset.m)});
-$('#brand').onclick=()=>{$('#mbox').innerHTML=`<h3>PaNIC Hôn Phối</h3><p>Tạo ảnh cho thánh lễ hôn phối — tên thánh, họ tên, Lời Chúa, biểu tượng đức tin — để chiếu trên tivi, đăng mạng xã hội, và tạo thiệp mời tham dự thánh lễ.</p>
+$('#brand').onclick=()=>{$('#mbox').innerHTML=`<h3>PaNIC Thánh Lễ Hôn Phối</h3><p>Tạo ảnh cho thánh lễ hôn phối — tên thánh, họ tên, Lời Chúa, biểu tượng đức tin — để chiếu trên tivi, đăng mạng xã hội, và tạo thiệp mời tham dự thánh lễ.</p>
   <div class="actions"><button class="bigbtn rose" id="bp">▶ Trình chiếu cả bộ ảnh</button><button class="bigbtn alt" data-reset>↺ Khôi phục cài đặt mặc định</button><button class="bigbtn ghost" id="bc">Đóng</button></div>`;$('#modal').classList.add('show');
   $('#bp').onclick=()=>{$('#modal').classList.remove('show');playStart(0)};$('#bc').onclick=()=>$('#modal').classList.remove('show');$('#mbox').querySelector('[data-reset]').onclick=askReset};
 let tT=0;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>t.classList.remove('show'),2200)}

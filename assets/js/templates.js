@@ -125,7 +125,7 @@ function invFamilies(K,W,f,top,C){
   const {T,R,y}=K;
   const one=(cx,label,sa,na,sb,nb,addr)=>{
     T(label,cx,y(top),{font:'mont',size:15,ls:.2,upper:1,color:C.accent,fit:W*.4});
-    const parent=(saint,name,yy)=>R([{text:saint+' ',font:'cg',italic:1},{text:name,font:'cg',weight:600}],cx,y(yy),25,{color:C.text,fit:W*.4});
+    const parent=(saint,name,yy)=>R([{text:saint+' ',font:'cg',italic:1},{text:name,font:'times',weight:400}],cx,y(yy),25,{color:C.text,fit:W*.4});
     parent(sa,na,top+37);parent(sb,nb,top+73);
     const [first,last]=splitAddr(addr);
     T(first,cx,y(top+112),{font:'cg',size:21,color:C.mute,fit:W*.4});
@@ -141,29 +141,34 @@ function invVerse(K,W,v,top,C){
 }
 /* 1 · Giấy ngà: chữ serif chủ đạo, dấu ấn đức tin và nhịp chữ cân đối; không có ảnh. */
 function invCream({W,H,f,v,sym}){
-  const K=invKit(W,H),{e,T,L,y,fs}=K,C={text:'#32291f',accent:'#9d7a43',mute:'#786850'};
-  e.push({t:'rect',x:0,y:0,w:W,h:H,fill:'#fbf7ee'},{t:'paper',alpha:.18},
-    {t:'rframe',x:W*.04,y:y(38),w:W*.92,h:H-y(76),r:fs(14),lw:fs(1.4),color:'#b89c70'},
-    {t:'sym',kind:sym,x:W/2,y:y(95),s:fs(68),color:'gold'});
-  invVerse(K,W,v,206,C);L(W*.31,y(295),W*.69,{color:C.accent,lw:fs(.8)});
-  invFamilies(K,W,f,338,C);
-  T(f.inv1,W/2,y(552),{font:'cg',italic:1,size:29,color:C.mute});
-  T(f.inv2,W/2,y(594),{font:'mont',size:17,upper:1,ls:.15,color:C.text});
+  const K=invKit(W,H),{e,T,L,y,fs}=K,C={text:'#302c28',accent:'#8a643b',mute:'#51473d'};
+  e.push({t:'rect',x:0,y:0,w:W,h:H,fill:'#fffaf1'},
+    {t:'rframe',x:W*.045,y:y(35),w:W*.91,h:H-y(70),r:fs(3),lw:fs(1.2),color:'#b49a75'},
+    {t:'sym',kind:sym,x:W/2,y:y(100),s:fs(70),color:'gold'});
+  T('THÁNH LỄ HÔN PHỐI',W/2,y(176),{font:'mont',size:22,ls:.15,color:C.accent});
+  T(f.inv1,W/2,y(230),{font:'times',italic:1,size:26,color:C.mute});
+  T(f.inv2,W/2,y(271),{font:'mont',size:17,upper:1,ls:.06,color:C.text});
   const person=(saint,name,rank,yy)=>{
-    T(saint,W/2,y(yy),{font:'mont',size:17,upper:1,ls:.22,color:C.accent});
-    T(name,W/2,y(yy+61),{font:'cg',size:62,color:C.text,fit:W*.82});
-    T(rank,W/2,y(yy+106),{font:'cg',italic:1,size:22,color:C.mute});
+    T(saint,W/2,y(yy),{font:'mont',size:18,upper:1,ls:.16,color:C.accent});
+    T(name,W/2,y(yy+56),{font:'pf',size:54,color:C.text,fit:W*.82});
+    T(rank,W/2,y(yy+101),{font:'times',italic:1,size:23,color:C.mute});
   };
-  person(f.gs,f.gn,f.grank,649);T('&',W/2,y(801),{font:'gv',size:44,color:C.accent});person(f.bs,f.bn,f.brank,845);
-  L(W*.15,y(1008),W*.85,{color:C.accent,lw:fs(.9)});
-  T(f.inv3,W/2,y(1045),{font:'cg',italic:1,size:25,color:C.mute});
-  T(f.parish,W/2,y(1090),{font:'pf',size:32,color:C.text,fit:W*.82});
-  T(f.time,W*.3,y(1165),{font:'pf',size:45,color:C.accent,fit:W*.3});
-  T(dotDate(f.date),W*.69,y(1165),{font:'pf',size:38,color:C.accent,fit:W*.38});
-  T('Giờ cử hành',W*.3,y(1210),{font:'mont',size:14,upper:1,ls:.16,color:C.mute,fit:W*.3});
-  T(weekday(f.date),W*.69,y(1210),{font:'mont',size:14,upper:1,ls:.16,color:C.mute,fit:W*.38});
-  if(f.lunar)T(f.lunar,W/2,y(1260),{font:'cg',italic:1,size:22,color:C.mute,fit:W*.82});
-  T('Trân trọng kính mời',W/2,y(1324),{font:'gv',size:38,color:C.accent});
+  person(f.gs,f.gn,f.grank,330);
+  T('&',W/2,y(478),{font:'pf',italic:1,size:37,color:C.accent});
+  person(f.bs,f.bn,f.brank,533);
+  L(W*.18,y(680),W*.82,{color:'#b49a75',lw:fs(1)});
+  T(f.inv3,W/2,y(720),{font:'times',italic:1,size:24,color:C.mute});
+  T(f.parish,W/2,y(770),{font:'pf',size:34,color:C.text,fit:W*.82});
+  T(f.time,W*.29,y(842),{font:'pf',size:40,color:C.accent,fit:W*.29});
+  T(dotDate(f.date),W*.68,y(842),{font:'pf',size:36,color:C.accent,fit:W*.39});
+  T('GIỜ CỬ HÀNH',W*.29,y(887),{font:'mont',size:14,ls:.1,color:C.mute});
+  T(weekday(f.date),W*.68,y(887),{font:'mont',size:14,upper:1,ls:.1,color:C.mute});
+  if(f.lunar)T(f.lunar,W/2,y(936),{font:'times',italic:1,size:21,color:C.mute});
+  L(W*.18,y(979),W*.82,{color:'#b49a75',lw:fs(1)});
+  invFamilies(K,W,f,1017,C);
+  T(`“${v.t}”`,W/2,y(1221),{font:'times',italic:1,size:22,color:C.mute,maxW:W*.8,maxH:fs(64),lh:1.3});
+  T(v.r,W/2,y(1277),{font:'times',size:18,color:C.accent});
+  T('Trân trọng kính mời',W/2,y(1341),{font:'pf',italic:1,size:30,color:C.accent});
   return e}
 
 /* 2 · Trắng hồng hiện đại — ảnh lớn trên đầu, dải ngày tháng kẻ chỉ, chữ không chân + chữ bay */

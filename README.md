@@ -1,12 +1,12 @@
 <div align="center">
 
-<img src="docs/hero.svg" alt="PaNIC Hôn Phối — Ảnh và thiệp mời thánh lễ hôn phối" width="100%">
+<img src="docs/hero.svg" alt="PaNIC Thánh Lễ Hôn Phối — Ảnh và thiệp mời thánh lễ hôn phối" width="100%">
 
-### [✦ Mở PaNIC Hôn Phối](https://panic-thanhle-hp.vercel.app)
+### [✦ Mở PaNIC Thánh Lễ Hôn Phối](https://panic-thanhle-hp.vercel.app)
 
 Studio ảnh cưới chụp rất đẹp, nhưng thánh lễ hôn phối còn cần những điều riêng:<br>
 **tên thánh**, **Lời Chúa**, **biểu tượng đức tin** — và một màn hình trang nghiêm trong nhà thờ.<br>
-PaNIC Hôn Phối giúp gia đình và giáo xứ tự làm bộ ảnh ấy, cùng thiệp mời tham dự thánh lễ, chỉ trong vài phút.
+PaNIC Thánh Lễ Hôn Phối giúp gia đình và giáo xứ tự làm bộ ảnh ấy, cùng thiệp mời tham dự thánh lễ, chỉ trong vài phút.
 
 </div>
 
@@ -91,3 +91,12 @@ Bài kiểm thử tải thật JPG/PNG của cả 5 mẫu ở khổ điện tử
 <sub>Một sản phẩm trong bộ sưu tập <b>PaNIC</b> · làm với ♥ cho các giáo xứ Việt Nam</sub>
 
 </div>
+
+
+Kiểm tra ảnh tải lên trên Chromium và WebKit (giao diện điện thoại):
+
+```sh
+npx playwright install --with-deps chromium webkit
+BASE_URL=http://127.0.0.1:8000 node tests/uploaded-photos.spec.cjs
+BROWSER=webkit BASE_URL=http://127.0.0.1:8000 node tests/invitations.spec.cjs
+```
