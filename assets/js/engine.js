@@ -212,6 +212,9 @@ function drawRich(ctx,e,P){const segs=e.segs.map(g=>({...g,text:String(g.text||'
 function drawDecor(ctx,e,P,W,H){
   ctx.save();
   switch(e.t){
+    case'archline':{
+      shapePath(ctx,e.x,e.y,e.w,e.h,'arch',0);ctx.strokeStyle=colorOf(e.color,P);ctx.lineWidth=e.lw||1;ctx.globalAlpha=e.alpha??.7;ctx.stroke();break;
+    }
     case'botanical':{
       ctx.translate(e.x,e.y);ctx.scale(e.flip||1,1);ctx.globalAlpha=e.alpha??.25;
       ctx.strokeStyle=colorOf(e.color,P);ctx.fillStyle=colorOf(e.color,P);ctx.lineWidth=e.s*.004;

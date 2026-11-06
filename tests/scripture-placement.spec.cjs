@@ -7,9 +7,13 @@ const{chromium}=require('playwright');const assert=require('node:assert/strict')
    const W=1000,H=1000*size.h/size.w;
    for(const t of TPL){
     const e=t.b({W,H,m:Math.min(W,H)*.06,g:12,f:texts(),v,land:W>H*1.05,sym:'crossring',P:pal(t.pal)}),photos=e.filter(x=>x.t==='img'),q=e.find(x=>x.t==='text'&&x.text==='“'+v.t+'”');
-    if(!q||!photos.length)continue;templates.add(t.id);const width=q.fit||q.maxW,height=Math.min(q.maxH||Infinity,q.size*(q.lh||1.3)*est(q.text,q.size,q.maxW||width));
-    for(const photo of photos){const beside=q.x+width/2<=photo.x||q.x-width/2>=photo.x+photo.w,above=q.y+height/2<=photo.y;
-     if(!beside&&!above)throw Error(t.id+' puts Scripture below/on the photo for '+size.n);count++}
+    if(!q){if(t.id!=='thanks')throw Error('Missing Scripture in '+t.id);continue;}
+    templates.add(t.id);
+    if(!q.italic||!q.maxW||!q.maxH||q.y<0||q.y>H)throw Error('Invalid quotation geometry in '+t.id);
+    const reference=e.find(x=>x.t==='text'&&x.text===v.r);
+    if(!reference||reference.y<=q.y)throw Error('Missing quotation reference in '+t.id);
+    count++;
+
    }
   }
   return{count,templates:[...templates]};

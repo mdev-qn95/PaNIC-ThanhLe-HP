@@ -49,7 +49,7 @@ const output=process.env.OUTPUT_DIR;
         const els=layout(1000,1414,{...S.invite,tpl:t.id});
         const text=els.filter(e=>e.t==='text'||e.t==='rich');
         if(!text.every(e=>Number.isFinite(e.x)&&Number.isFinite(e.y)))throw Error('Invalid text position');
-        if(['inv_cream','inv_wine'].includes(t.id)&&els.some(e=>e.t==='img'))throw Error('Photo in photo-free card');
+        if(['inv_cream','inv_gold'].includes(t.id)&&els.some(e=>e.t==='img'))throw Error('Photo in photo-free card');
         if(t.id==='inv_arch'&&!els.some(e=>e.t==='img'))throw Error('Missing photo in arch card');
         for(const key of Object.keys(SYMBOLS)){
           const c=document.createElement('canvas');c.width=280;c.height=280;drawSymbol(c.getContext('2d'),key,140,140,200,'gold',pal(t.pal));symbols++;

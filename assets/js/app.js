@@ -153,8 +153,8 @@ function renderPanel(){
   }
   else if(tab==='verse'){
     const vc=(v,i)=>`<button class="vcard${sl.v===i?' on':''}" data-v="${i}">“${esc(v.t)}”<small>${esc(v.r)}</small></button>`;
-    const syms=`<div class="syms">${Object.entries(SYMBOLS).filter(([k])=>!inv||['crossring','hearts','wreath','unity'].includes(k)).map(([k,n])=>`<button class="symb${sl.sym===k?' on':''}" data-s="${k}"><canvas></canvas>${n}</button>`).join('')}</div>`;
-    P.innerHTML=inv?`<div class="lbl2">Biểu tượng tình yêu Công giáo</div>${syms}<p class="note">Câu Lời Chúa và thứ tự nội dung được giữ thống nhất trong cả 5 mẫu thiệp.</p>`:peek?`${syms}<div class="hstrip">${VERSES.map(vc).join('')}<button class="more" data-full>Tự nhập<br>câu khác ›</button></div>`
+    const syms=`<div class="syms">${Object.entries(SYMBOLS).map(([k,n])=>`<button class="symb${sl.sym===k?' on':''}" data-s="${k}"><canvas></canvas>${n}</button>`).join('')}</div>`;
+    P.innerHTML=peek?`${syms}<div class="hstrip">${VERSES.map(vc).join('')}<button class="more" data-full>Tự nhập<br>câu khác ›</button></div>`
       :`<div class="lbl2" style="margin-top:4px">Biểu tượng ${inv?'trên thiệp':'của ảnh này'}</div>${syms}<div class="lbl2">Câu Lời Chúa</div><div class="vlist">${VERSES.map(vc).join('')}
         <button class="vcard${sl.v===-1?' on':''}" data-v="-1">✎ Tự nhập câu khác<small>dùng bản dịch giáo xứ bạn quen dùng</small></button></div>
         <div id="custom" style="${sl.v===-1?'':'display:none'};margin-top:12px"><label class="field"><span>Câu Lời Chúa</span><textarea id="vt" rows="3">${esc(sl.vt)}</textarea></label><label class="field"><span>Trích dẫn (vd: Mt 19,6)</span><input id="vr" value="${esc(sl.vr)}"></label></div>

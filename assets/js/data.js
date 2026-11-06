@@ -71,7 +71,7 @@ const TEXTS={
 };
 const FIELDS_SLIDE=[
   ['Đôi tân hôn',[['gs','Tên thánh (người nam)'],['gn','Họ tên đầy đủ'],['bs','Tên thánh (người nữ)'],['bn','Họ tên đầy đủ']]],
-  ['Thánh lễ',[['date','Ngày cử hành'],['time','Giờ'],['parish','Giáo xứ']]],
+  ['Thánh lễ',[['title','Tiêu đề'],['date','Ngày cử hành'],['time','Giờ'],['parish','Giáo xứ']]],
   ['Lời chào & cảm tạ',[['welcome','Lời chào','area'],['wait','Dòng chờ thánh lễ'],['thanks','Tiêu đề cảm tạ'],['thanks2','Lời cảm tạ','area']]],
 ];
 const FIELDS_INV=[
