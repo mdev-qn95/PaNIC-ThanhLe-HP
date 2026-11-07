@@ -3,8 +3,6 @@
    Ảnh là chính, chữ gọn. Mỗi mẫu luôn có tên thánh + họ tên của cả hai người, tự bố cục cho khổ ngang lẫn dọc. */
 const I=(x,y,w,h,o={})=>({t:'img',x,y,w,h,...o});
 const W1='#ffffff';
-const ref=(v,o={})=>({text:v.r,font:'serif',italic:1,size:o.size||24,ls:.04,color:o.color||'accent'});
-const quote=(v,size,w,o={})=>{const q='“'+v.t+'”';return{text:q,font:'serif',italic:1,size,wrap:1,lines:est(q,size,w),lh:1.3,...o}};
 /* ngày (chữ có chân, giãn nhẹ) + giáo xứ (nghiêng) */
 const when=(f,o={})=>{const z=o.size||26;return[{text:f.date,font:'display',size:z,ls:.16,color:o.color,shadow:o.shadow,pad:0},{text:f.parish,font:'serif',italic:1,size:z*.95,color:o.color,shadow:o.shadow}]};
 const whenLine=(f,o={})=>({text:`${f.date}  —  ${f.parish}`,font:'serif',italic:1,size:o.size||26,ls:.04,color:o.color,shadow:o.shadow});
@@ -22,8 +20,8 @@ const TPL=[
   stack(e,x,y0,y1,[{sym,s:56},...names(f,{size:land?60:54}),{div:1},...when(f,{size:24})],pw);
   return e}},
 {id:'verse',n:'Lời Chúa',d:'Câu Kinh Thánh trên ảnh',b({W,H,m,f,v,land,sym}){
-  const e=[I(0,0,W,H,{bleed:1}),{t:'shade',x:0,y:land?H*.1:H*.3,w:W,h:land?H*.9:H*.7,dir:'up',alpha:.8}],w=land?W*.72:W*.84,sz=land?40:52;
-  stack(e,W/2,land?m*.5:H*.38,H-m*.7,[{sym,s:60,color:'white'},quote(v,sz,w,{color:W1,shadow:true}),ref(v,{color:W1,size:24}),{div:1,color:'white'},...names(f,onPhoto({size:land?46:44}))],w,'center',1,'bottom');
+  const e=[I(0,0,W,H,{bleed:1}),{t:'shade',x:0,y:land?H*.1:H*.3,w:W,h:land?H*.9:H*.7,dir:'up',alpha:.8}],w=land?W*.72:W*.84;
+  stack(e,W/2,land?m*.5:H*.38,H-m*.7,[{sym,s:60,color:'white'},{div:1,color:'white'},...names(f,onPhoto({size:land?46:44}))],w,'center',1,'bottom');
   return e}},
 {id:'panel',n:'Khung kính giữa ảnh',d:'Ảnh nền, thẻ chữ trong mờ',b({W,H,m,f,land,sym}){
   const e=[I(0,0,W,H,{bleed:1})],pw=land?W*.42:W*.78,ph=land?H*.66:H*.4,px=(W-pw)/2,py=land?(H-ph)/2:H-m*1.2-ph;
@@ -37,9 +35,9 @@ const TPL=[
 {id:'covenant',n:'Giao ước',d:'Lời Chúa + ảnh nửa khung',b({W,H,m,g,f,v,land,sym}){
   const e=[];
   if(land){const pw=W*.52;e.push(I(W-pw,0,pw,H,{bleed:1}));e.push({t:'fade',x:W-pw,y:0,w:pw*.25,h:H,dir:'left'});const w=W-pw-m*1.8;
-    stack(e,m*.9+w/2,m,H-m,[{sym,s:50},quote(v,40,w,{color:'text'}),ref(v,{size:22}),{div:1},...names(f,{size:44})],w);return e}
+    stack(e,m*.9+w/2,m,H-m,[{sym,s:50},{div:1},...names(f,{size:44})],w);return e}
   const ph=H*.5;e.push(I(0,0,W,ph,{bleed:1}));e.push({t:'fade',x:0,y:ph*.7,w:W,h:ph*.3+1,dir:'down'});
-  stack(e,W/2,ph+10,H-m*.9,[{sym,s:54},quote(v,46,W*.82),ref(v,{size:24}),{div:1},...names(f,{size:46})],W*.84);
+  stack(e,W/2,ph+10,H-m*.9,[{sym,s:54},{div:1},...names(f,{size:46})],W*.84);
   return e}},
 {id:'sacrament',n:'Bí tích Hôn phối',d:'Trang trọng như thiệp, có ảnh',b({W,H,m,f,v,land,sym}){
   const o=m*.5,e=[{t:'frame',x:o,y:o,w:W-2*o,h:H-2*o,lw:1.8,gap:11,corner:24}];
@@ -55,7 +53,7 @@ const TPL=[
 {id:'emblem',n:'Biểu tượng',d:'Không cần ảnh',b({W,H,m,f,v,land,sym}){
   const e=[{t:'glow',x:W/2,y:H*.42,r:Math.max(W,H)*.6,color:'accent',alpha:.16},{t:'frame',x:m*.55,y:m*.55,w:W-1.1*m,h:H-1.1*m,lw:2.4,gap:12,corner:30}],w=land?W*.7:W*.78;
   stack(e,W/2,m*1.3,H-m*1.3,[{text:f.title,font:'display',size:26,upper:1,ls:.35,color:'accent'},{gap:12},{sym,s:land?140:210},{gap:12},...names(f,{size:land?66:56}),{div:1},
-    ...when(f,{size:26}),{gap:8},quote(v,24,w,{alpha:.85}),ref(v,{size:20})],w);
+    ...when(f,{size:26})],w);
   return e}},
 {id:'thanks',n:'Cảm tạ',d:'Kết thúc thánh lễ',b({W,H,m,f,land,sym}){
   const e=[],items=w=>[{sym,s:50},{text:f.thanks,font:'script',size:84,color:'accent'},{text:f.thanks2,font:'serif',italic:1,size:25,wrap:1,lines:est(f.thanks2,25,w),lh:1.35},{div:1},...names(f,{size:land?40:36})];
@@ -63,6 +61,31 @@ const TPL=[
   else{e.push(I(0,0,W,H*.56,{bleed:1}));e.push({t:'fade',x:0,y:H*.38,w:W,h:H*.18+1,dir:'down'});const w=W*.84;stack(e,W/2,H*.5,H-m*.8,items(w),w)}
   return e}},
 ];
+
+/* Lời Chúa luôn ở đầu ảnh, tách khỏi vùng ảnh và nội dung bên dưới.
+   Đo cùng quy tắc với drawText để trích dẫn sát câu ngay cả khi đổi font/cỡ chữ. */
+let scriptureMeasureContext;
+function scriptureHeader(W,H,v){
+  const ctx=scriptureMeasureContext||(scriptureMeasureContext=document.createElement('canvas').getContext('2d'));
+  const z=Math.min(W,H),top=z*.08,width=W*.84;
+  const q={t:'text',role:'scripture',text:v.t?`“${v.t}”`:'',x:W/2,y:top,align:'center',valign:'top',font:'serif',italic:1,size:z*.041,maxW:width,fit:width,maxH:z*.17,lh:1.3,color:'text'};
+  const qh=measureTextBlock(ctx,q)?.tot||0;
+  const r={t:'text',role:'scripture-reference',text:v.r,x:W/2,y:top+qh+(qh?z*.008:0),align:'center',valign:'top',font:'serif',italic:1,size:z*.023,fit:width,maxH:z*.06,lh:1.2,color:'accent'};
+  const rh=measureTextBlock(ctx,r)?.tot||0;
+  return{items:[q,r],height:qh||rh?r.y+rh+z*.05:z*.04};
+}
+for(const tpl of TPL){
+  const body=tpl.b;
+  tpl.b=options=>{
+    const {W,H,v}=options,header=scriptureHeader(W,H,v),h=H-header.height;
+    const items=body({...options,H:h,m:Math.min(W,h)*.06});
+    return[...header.items,...items.map(item=>{
+      const shifted={...item};
+      for(const key of ['y','y1','y2'])if(typeof shifted[key]==='number')shifted[key]+=header.height;
+      return shifted;
+    })];
+  };
+}
 
 /* ===== Hai mẫu thiệp mời ===== */
 function invKit(W,H){const U=H/1414,X=W/1000,fs=k=>k*Math.min(U,X),y=k=>k*U,e=[];

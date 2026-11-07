@@ -1,0 +1,37 @@
+<!doctype html><meta charset="utf-8"><link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Dancing+Script:wght@500&family=Ephesis&family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Great+Vibes&family=Lora:ital,wght@0,400;1,400&family=Montserrat:wght@300;400;500;600&family=Noto+Serif+Display:ital,wght@0,300;0,400;1,300&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet"><style>body{margin:24px;background:#f7f2ec;color:#30241d;font:16px sans-serif}#gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}canvas{width:100%;background:white}pre{white-space:pre-wrap}h2{font-size:18px}</style><h1>Kiểm tra Lời Chúa trên đầu ảnh Thánh lễ</h1><pre id="report">Đang kiểm tra…</pre><div id="gallery"></div><script src="../assets/js/data.js"></script><script src="../assets/js/symbols.js"></script><script src="../assets/js/engine.js"></script><script src="../assets/js/templates.js"></script><script>const FL=['400 40px "Cormorant Garamond"','500 40px "Cormorant Garamond"','italic 400 40px "Cormorant Garamond"','300 40px "Noto Serif Display"','400 40px "Playfair Display"','italic 400 40px "Playfair Display"',
+  '400 40px "Great Vibes"','500 40px "Dancing Script"','300 40px "Montserrat"','500 40px "Montserrat"','400 40px "Lora"','italic 400 40px "Lora"','500 40px "Be Vietnam Pro"','400 40px "Noto Serif"','700 40px "Noto Serif"','italic 400 40px "Noto Serif"','400 40px "Ephesis"'];
+
+
+Promise.allSettled(FL.map(f=>document.fonts.load(f,'AaĐđẤấỡễ&“”'))).then(()=>{
+ const failures=[];let cases=0,exports=0;
+ const ctx=document.createElement('canvas').getContext('2d');
+ for(const tpl of TPL)for(const dims of Object.values(SIZES))for(const fp of Object.keys(FP))for(const scale of [.7,1,1.3])for(const v of VERSES){
+  S.fp=fp;S.tscale=scale;
+  const W=1000,H=W*dims.h/dims.w,z=Math.min(W,H);
+  const els=tpl.b({W,H,m:z*.06,g:S.gap,f:texts(),v,land:W>H*1.05,sym:DEFAULT_SYMBOL,P:pal()});
+  const [q,r]=els, qm=measureTextBlock(ctx,q),rm=measureTextBlock(ctx,r);
+  const fail=message=>failures.push(`${tpl.id}/${dims.n}/${fp}/${scale}: ${message}`);
+  if(q.role!=='scripture'||r.role!=='scripture-reference')fail('missing top header');
+  if(q.y<z*.079)fail('top margin');
+  if(r.y<q.y+qm.tot||r.y-q.y-qm.tot>z*.009)fail('citation gap');
+  for(const e of [q,r]){
+   const b=measureTextBlock(ctx,e);
+   if(b.lines.some(line=>b.meas(line)>W*.841))fail('horizontal margin');
+  }
+  const bottom=r.y+rm.tot;
+  for(const e of els.slice(2))if(e.t==='img'&&e.y<bottom+z*.049)fail('photo overlaps header');
+  if(els.slice(2).some(e=>e.t==='text'&&(e.text===q.text||e.text===r.text)))fail('duplicate verse');
+  cases++;
+ }
+ S.fp='classic';S.tscale=1;
+ for(const tpl of TPL)for(const dims of Object.values(SIZES)){
+  const c=document.createElement('canvas');c.width=800;c.height=Math.round(800*dims.h/dims.w);
+  render(c.getContext('2d'),c.width,c.height,{slide:{id:'qa',tpl:tpl.id,sym:DEFAULT_SYMBOL,v:0},idx:0});
+  if(c.toDataURL('image/png').length<4000)failures.push(tpl.id+' export failed');exports++;
+  if(dims===SIZES.tv169||dims===SIZES.tv916&&['covenant','emblem'].includes(tpl.id)){
+   const box=document.createElement('section');box.innerHTML='<h2>'+tpl.n+' · '+dims.n+'</h2>';box.append(c);document.querySelector('#gallery').append(box);
+  }
+ }
+ document.querySelector('#report').textContent=JSON.stringify({templates:TPL.length,fonts:Object.keys(FP).length,sizes:Object.keys(SIZES).length,verses:VERSES.length,cases,exports,failures},null,2);
+}).catch(e=>document.querySelector('#report').textContent=e.stack);
+</script>

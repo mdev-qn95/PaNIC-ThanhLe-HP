@@ -113,7 +113,7 @@ function drawSlot(ctx,e,i,P,o){
 
 function wrap(s,maxW,meas){const out=[];s.split('\n').forEach(par=>{const ws=par.split(/\s+/);let cur='';ws.forEach(w=>{const t=cur?cur+' '+w:w;if(meas(t)>maxW&&cur){out.push(cur);cur=w}else cur=t});out.push(cur)});return out}
 function colorOf(c,P){return c==='accent'?P.accent:c==='bg'?P.bg:c==='soft'?P.soft:c&&c[0]==='#'?c:P.text}
-function drawText(ctx,e,P){
+function measureTextBlock(ctx,e){
   let s=e.text;if(s==null||s==='')return;s=String(s).normalize('NFC');if(e.upper)s=s.toLocaleUpperCase('vi');
   const[family,w0]=fam(e.font);let size=e.size*(e.noScale?1:S.tscale);
   const setF=()=>ctx.font=`${e.italic?'italic ':''}${e.weight||w0} ${size}px "${family}"`;setF();
@@ -123,6 +123,11 @@ function drawText(ctx,e,P){
   if(e.maxH){for(let i=0;i<4&&lines.length*size*(e.lh||1.2)>e.maxH;i++){size*=e.maxH/(lines.length*size*(e.lh||1.2));setF();lines=e.maxW?wrap(s,e.maxW,meas):s.split('\n')}}
   if(e.maxLines&&lines.length>e.maxLines){lines=lines.slice(0,e.maxLines);lines[lines.length-1]=lines[lines.length-1].replace(/[\s,.;—-]*$/,'')+'…'}
   const ls=(e.ls||0)*size,lh=size*(e.lh||1.2),tot=lines.length*lh;
+  return{size,lines,ls,lh,tot,meas};
+}
+function drawText(ctx,e,P){
+  const block=measureTextBlock(ctx,e);if(!block)return;
+  const{size,lines,ls,lh,tot,meas}=block;
   ctx.save();ctx.translate(e.x,e.y);if(e.rot)ctx.rotate(e.rot);ctx.globalAlpha=e.alpha??1;ctx.textBaseline='middle';ctx.textAlign='left';
   const y0=e.valign==='top'?lh/2:-tot/2+lh/2;
   if(e.shadow){ctx.shadowColor=e.shadow===true?'rgba(0,0,0,.45)':e.shadow;ctx.shadowBlur=size*.3}
